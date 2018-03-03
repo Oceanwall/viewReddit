@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "dotenv": "^5.0.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-scripts": "1.1.1"
+    "react-scripts": "1.1.1",
+    "snoostorm": "^0.0.5",
+    "snoowrap": "^1.15.2"
   },
   "scripts": {
     "start": "react-scripts start",
