@@ -24,11 +24,30 @@ class Selector extends Component {
   render() {
     return (
       //this syntax is considered to be the "good" way to handle callbacks with multiple parameters, as otherwise, the function automatically calls cause parentheses
-      <form onSubmit={(event) => this.state.subredditCallback(this.state.value, event)}>
+      //use a button, much more customizable for later
+      //NOTE: Do i want to wipe input text after submit?
+      <form id="submit" onSubmit={(event) => this.state.subredditCallback(this.state.value, event)}>
         <input type="text" onChange={this.handleChange}/>
-        <input type="submit" value="Submit" />
+        <button type="submit" id="submit">
+          Submit!
+        </button>
+        {/* <input type="submit" value="Submit" /> */}
       </form>
     )
+  }
+}
+
+class Selected extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      subreddit: props.subreddit,
+    };
+  }
+  render() {
+    return (
+      <p>{this.state.subreddit}</p>
+    );
   }
 }
 
@@ -48,12 +67,13 @@ class App extends Component {
     this.state = {
       snoo : snoowrap,
       client: client,
-      subredditAdded: false,
-      subredditSelected: false
+      subredditSelected: false,
+      selectedSubreddit: "",
     };
 
     //this is strange; do i really need to bind every freaking function in react?
     this.subredditHandle = this.handleSelectedSubreddit.bind(this);
+    this.switchSubreddit = this.switchSubreddit.bind(this);
 
   }
 
@@ -65,34 +85,45 @@ class App extends Component {
     this.setState({subredditSelected: true});
     //maybe adding a little loading blurb if this takes too much time? or just make it disappear once confirmed LOL
     //confirmation
+    // var temp;
     // try {
-    //   console.log(subreddit);
-    //   this.state.snoo.getSubreddit("ewqeqqeqwe").getRules().then((rules) => {
-    //     console.log(rules);
-    //   }).catch((error) => {
-    //     console.log(error);
-    //   });
+    //   temp = this.state.snoo.getSubreddit("askreddit");
     // }
     // catch(error) {
     //   console.log(error);
     // }
+    // console.log(temp.toString());
 
+    //hardcode for now, pray that not_an_aardvark saves my ass
 
     //snoostorm doesnt have its own validation feature, so we need to do it before we call it
     // let stream = this.state.client.CommentStream({
-    //   subreddit: "ererer",
+    //   subreddit: "askreddit",
     //   results: 10,
     //   polltime: 1000
     // });
 
-
+    this.setState({selectedSubreddit: "askreddit"});
   }
+
+  switchSubreddit() {
+    //end snoostream
+
+    this.setState({subredditSelected: false,
+                   selectedSubreddit: "",
+                 });
+  }
+
 
   render() {
     return (
       <div>
         {!this.state.subredditSelected && <Selector
           onSubmit={this.subredditHandle}
+        />}
+        {this.state.subredditSelected && <Selected
+          subreddit={this.state.selectedSubreddit}
+          onBack={this.switchSubreddit}
         />}
       </div>
     );

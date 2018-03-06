@@ -1,0 +1,10 @@
+/* todo: Grid layout */
+input {
+  border: 1px dotted #999;
+  border-radius: 5px;
+
+  height: 50px;
+  width: 300px;
+
+  -webkit-appearance: none;
+}
