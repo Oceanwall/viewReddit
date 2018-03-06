@@ -15,24 +15,17 @@ class Selector extends Component {
 
     //this may seem slightly inefficient, but I trust the react docs
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
     this.setState({value: event.target.value});
-    console.log(this.state.value);
-  }
-
-  handleSubmit(event) {
-    console.log("submitted value: " + this.state.value);
-    this.state.subredditCallback(this.state.value); //i cant believe this worked
-    event.preventDefault(); //to stop page from refreshing
   }
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <input type="text" onChange={this.handleChange} />
+      //this syntax is considered to be the "good" way to handle callbacks with multiple parameters, as otherwise, the function automatically calls cause parentheses
+      <form onSubmit={(event) => this.state.subredditCallback(this.state.value, event)}>
+        <input type="text" onChange={this.handleChange}/>
         <input type="submit" value="Submit" />
       </form>
     )
@@ -43,32 +36,65 @@ class Selector extends Component {
 class App extends Component {
   constructor(props) {
     super(props);
-    let snoo = new Snoowrap({
+    const snoowrap = new Snoowrap({
       userAgent: "commentVisualizerv3318",
       clientId: process.env.REACT_APP_CLIENT_ID,
       clientSecret: process.env.REACT_APP_CLIENT_SECRET,
       username: process.env.REACT_APP_REDDIT_USER,
       password: process.env.REACT_APP_REDDIT_PASS
     });
-    let client = new Snoostorm(snoo);
+
+    let client = new Snoostorm(snoowrap);
     this.state = {
+      snoo : snoowrap,
       client: client,
-      subredditAdded: false
+      subredditAdded: false,
+      subredditSelected: false
     };
+
+    //this is strange; do i really need to bind every freaking function in react?
+    this.subredditHandle = this.handleSelectedSubreddit.bind(this);
+
   }
 
-  handleSelectedSubreddit(subreddit) {
+  handleSelectedSubreddit(subreddit, event) {
     //subreddit validation here
     //if successful, then adjust state
     //be sure to send response to child indicating if successful or not
-    console.log(subreddit);
+    event.preventDefault();
+    this.setState({subredditSelected: true});
+    //maybe adding a little loading blurb if this takes too much time? or just make it disappear once confirmed LOL
+    //confirmation
+    // try {
+    //   console.log(subreddit);
+    //   this.state.snoo.getSubreddit("ewqeqqeqwe").getRules().then((rules) => {
+    //     console.log(rules);
+    //   }).catch((error) => {
+    //     console.log(error);
+    //   });
+    // }
+    // catch(error) {
+    //   console.log(error);
+    // }
+
+
+    //snoostorm doesnt have its own validation feature, so we need to do it before we call it
+    // let stream = this.state.client.CommentStream({
+    //   subreddit: "ererer",
+    //   results: 10,
+    //   polltime: 1000
+    // });
+
+
   }
 
   render() {
     return (
-      <Selector
-        onSubmit={this.handleSelectedSubreddit}
-      />
+      <div>
+        {!this.state.subredditSelected && <Selector
+          onSubmit={this.subredditHandle}
+        />}
+      </div>
     );
   }
 }
