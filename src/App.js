@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import './App.css';
 require("dotenv").config();
 
@@ -25,7 +26,6 @@ class Selector extends Component {
     return (
       //this syntax is considered to be the "good" way to handle callbacks with multiple parameters, as otherwise, the function automatically calls cause parentheses
       //use a button, much more customizable for later
-      //NOTE: Do i want to wipe input text after submit?
       <form id="submit" onSubmit={(event) => this.state.subredditCallback(this.state.value, event)}>
         <input type="text" onChange={this.handleChange}/>
         <button type="submit" id="submit">
@@ -42,13 +42,50 @@ class Selected extends Component {
     super(props);
     this.state = {
       subreddit: props.subreddit,
+      back: props.back,
     };
   }
   render() {
     return (
-      <p>{this.state.subreddit}</p>
+      // mandatory parent element
+      <div>
+        <p>{this.state.subreddit}</p>
+        <button onClick={this.state.back}>
+          Go back
+        </button>
+      </div>
     );
   }
+}
+
+class CommentView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      stream: props.stream,
+    }
+  }
+
+  showComment() {
+    this.state.stream.on("comment", (comment) => {
+      let element = (
+        <div>
+          {comment.body}
+        </div>
+      );
+      ReactDOM.render(element, document.getElementById('comments'));
+    });
+  }
+
+  render() {
+    this.showComment();
+    return (
+      <div id="comments">
+        Hello world
+      </div>
+    );
+  }
+
 }
 
 
@@ -82,8 +119,6 @@ class App extends Component {
     //if successful, then adjust state
     //be sure to send response to child indicating if successful or not
     event.preventDefault();
-    this.setState({subredditSelected: true});
-    //maybe adding a little loading blurb if this takes too much time? or just make it disappear once confirmed LOL
     //confirmation
     // var temp;
     // try {
@@ -97,18 +132,18 @@ class App extends Component {
     //hardcode for now, pray that not_an_aardvark saves my ass
 
     //snoostorm doesnt have its own validation feature, so we need to do it before we call it
-    // let stream = this.state.client.CommentStream({
-    //   subreddit: "askreddit",
-    //   results: 10,
-    //   polltime: 1000
-    // });
+    let stream = this.state.client.CommentStream({
+      subreddit: "askreddit",
+      results: 10,
+      polltime: 1000
+    });
 
-    this.setState({selectedSubreddit: "askreddit"});
+    this.setState({selectedSubreddit: "askreddit", currentStream: stream, subredditSelected: true});
   }
 
   switchSubreddit() {
     //end snoostream
-
+    console.log("hello world");
     this.setState({subredditSelected: false,
                    selectedSubreddit: "",
                  });
@@ -118,13 +153,21 @@ class App extends Component {
   render() {
     return (
       <div>
-        {!this.state.subredditSelected && <Selector
-          onSubmit={this.subredditHandle}
-        />}
-        {this.state.subredditSelected && <Selected
-          subreddit={this.state.selectedSubreddit}
-          onBack={this.switchSubreddit}
-        />}
+        <div>
+          {!this.state.subredditSelected && <Selector
+            onSubmit={this.subredditHandle}
+          />}
+          {this.state.subredditSelected && <Selected
+            subreddit={this.state.selectedSubreddit}
+            back={this.switchSubreddit}
+          />}
+        </div>
+        <div>
+          {/* might run into a problem here with regard to the back button; well, i'll fix it if it comes to that... */}
+          {this.state.subredditSelected && <CommentView
+            stream={this.state.currentStream}
+          />}
+        </div>
       </div>
     );
   }
