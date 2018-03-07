@@ -11,7 +11,8 @@ class Selector extends Component {
     super(props);
     this.state = {
       value: '',
-      subredditCallback: props.onSubmit //store callback function in state
+      subredditCallback: props.onSubmit, //store callback function in state
+      acceptable: props.acceptable,
     };
 
     //this may seem slightly inefficient, but I trust the react docs
@@ -31,6 +32,8 @@ class Selector extends Component {
         <button type="submit" id="submit">
           Submit!
         </button>
+        {this.state.acceptable && <div/>}
+        {/* TODO: render indication that a non-existant subreddit was entered, remove it when the user clicks on the input box, and then relay that information back to the parent component (using callback function? maybe make submit button unclickable while we're at it omegalul) */}
         {/* <input type="submit" value="Submit" /> */}
       </form>
     )
@@ -106,6 +109,7 @@ class App extends Component {
       client: client,
       subredditSelected: false,
       selectedSubreddit: "",
+      acceptableSubreddit: true,
     };
 
     //this is strange; do i really need to bind every freaking function in react?
@@ -120,29 +124,30 @@ class App extends Component {
     //be sure to send response to child indicating if successful or not
     event.preventDefault();
     //confirmation
-    // var temp;
-    // try {
-    //   temp = this.state.snoo.getSubreddit("askreddit");
-    // }
-    // catch(error) {
-    //   console.log(error);
-    // }
-    // console.log(temp.toString());
+    this.state.snoo.getSubreddit(subreddit).fetch()
+    .then((result) => {
+      console.log("exists, nice");
 
-    //hardcode for now, pray that not_an_aardvark saves my ass
+      let stream = this.state.client.CommentStream({
+        subreddit: subreddit,
+        results: 10,
+        polltime: 1000
+      });
 
-    //snoostorm doesnt have its own validation feature, so we need to do it before we call it
-    let stream = this.state.client.CommentStream({
-      subreddit: "askreddit",
-      results: 10,
-      polltime: 1000
-    });
+      this.setState({selectedSubreddit: subreddit, currentStream: stream, subredditSelected: true});
 
-    this.setState({selectedSubreddit: "askreddit", currentStream: stream, subredditSelected: true});
+    }).catch((error) => {
+      console.log("doesnt exist, ayylmao");
+
+      //TODO: config this and link to lower levels
+      this.setState({acceptableSubreddit: false});
+    })
   }
 
   switchSubreddit() {
+    this.state.currentStream.emit("stop");
     //end snoostream
+
     console.log("hello world");
     this.setState({subredditSelected: false,
                    selectedSubreddit: "",
@@ -156,6 +161,7 @@ class App extends Component {
         <div>
           {!this.state.subredditSelected && <Selector
             onSubmit={this.subredditHandle}
+            acceptable={this.state.acceptableSubreddit}
           />}
           {this.state.subredditSelected && <Selected
             subreddit={this.state.selectedSubreddit}
