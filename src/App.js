@@ -13,28 +13,37 @@ class Selector extends Component {
       value: '',
       subredditCallback: props.onSubmit, //store callback function in state
       acceptable: props.acceptable,
+      reset: props.reset,
     };
 
     //this may seem slightly inefficient, but I trust the react docs
     this.handleChange = this.handleChange.bind(this);
   }
 
+  //Because the constructor is only called the first time that the component renders, this method is necessary to consistently update the state from the parent
+  componentWillReceiveProps(nextProps) {
+    this.setState({acceptable: nextProps.acceptable});
+  }
+
   handleChange(event) {
     this.setState({value: event.target.value});
   }
+
 
   render() {
     return (
       //this syntax is considered to be the "good" way to handle callbacks with multiple parameters, as otherwise, the function automatically calls cause parentheses
       //use a button, much more customizable for later
       <form id="submit" onSubmit={(event) => this.state.subredditCallback(this.state.value, event)}>
-        <input type="text" onChange={this.handleChange}/>
-        <button type="submit" id="submit">
+        <input type="text" onChange={this.handleChange} onClick={this.state.reset}/>
+        <button type="submit" id="submit" disabled={!this.state.acceptable}>
           Submit!
         </button>
-        {this.state.acceptable && <div/>}
+        {!this.state.acceptable &&
+          <div className="text-danger">
+            The subreddit you entered was invalid. Try another!
+          </div>}
         {/* TODO: render indication that a non-existant subreddit was entered, remove it when the user clicks on the input box, and then relay that information back to the parent component (using callback function? maybe make submit button unclickable while we're at it omegalul) */}
-        {/* <input type="submit" value="Submit" /> */}
       </form>
     )
   }
@@ -115,6 +124,7 @@ class App extends Component {
     //this is strange; do i really need to bind every freaking function in react?
     this.subredditHandle = this.handleSelectedSubreddit.bind(this);
     this.switchSubreddit = this.switchSubreddit.bind(this);
+    this.resetSelector = this.resetSelector.bind(this);
 
   }
 
@@ -148,10 +158,15 @@ class App extends Component {
     this.state.currentStream.emit("stop");
     //end snoostream
 
-    console.log("hello world");
+    console.log("commentstream stopped");
     this.setState({subredditSelected: false,
                    selectedSubreddit: "",
                  });
+  }
+
+  //called when input box is clicked, removes red indicator
+  resetSelector() {
+    this.setState({acceptableSubreddit: true});
   }
 
 
@@ -162,6 +177,7 @@ class App extends Component {
           {!this.state.subredditSelected && <Selector
             onSubmit={this.subredditHandle}
             acceptable={this.state.acceptableSubreddit}
+            reset={this.resetSelector}
           />}
           {this.state.subredditSelected && <Selected
             subreddit={this.state.selectedSubreddit}
