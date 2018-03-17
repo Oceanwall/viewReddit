@@ -43,7 +43,6 @@ class Selector extends Component {
           <div className="text-danger">
             The subreddit you entered was invalid. Try another!
           </div>}
-        {/* TODO: render indication that a non-existant subreddit was entered, remove it when the user clicks on the input box, and then relay that information back to the parent component (using callback function? maybe make submit button unclickable while we're at it omegalul) */}
       </form>
     )
   }
@@ -75,29 +74,34 @@ class CommentView extends Component {
     super(props);
     this.state = {
       stream: props.stream,
+      comments: [],
+      index: 0,
     }
+    this.showComment();
   }
 
   showComment() {
     this.state.stream.on("comment", (comment) => {
-      let element = (
-        <div>
-          {comment.body}
-        </div>
-      );
-      ReactDOM.render(element, document.getElementById('comments'));
+      // ReactDOM.render(element, document.getElementById('comments'));
+      //dirty mapping below, avert your eyes!
+      let newCommentArray = this.state.comments.slice();
+      let newComment = <div key={'Comment' + this.state.index}>{comment.body}</div>;
+
+      newCommentArray[this.state.index] = newComment;
+      this.setState({comments: newCommentArray, index: (this.state.index + 1 % 10)});
+
+
+      ReactDOM.render(this.state.comments, document.getElementById('comments'));
     });
   }
 
   render() {
-    this.showComment();
+    //the map method creates a new array with the results of calling a provided function on every element in the calling array
+    //currently fluctuating between two options: predetermine areas for comments to appear, 10 at a time before they start to disappear OR force user to manually click the comment to make them disappear, up to 20 appear before stopping
     return (
-      <div id="comments">
-        Hello world
-      </div>
+      <div id="comments">Working, I hope</div>
     );
   }
-
 }
 
 
