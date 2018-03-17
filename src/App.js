@@ -27,6 +27,7 @@ class Selector extends Component {
 
   handleChange(event) {
     this.setState({value: event.target.value});
+    this.state.reset();
   }
 
 
@@ -35,7 +36,7 @@ class Selector extends Component {
       //this syntax is considered to be the "good" way to handle callbacks with multiple parameters, as otherwise, the function automatically calls cause parentheses
       //use a button, much more customizable for later
       <form id="submit" onSubmit={(event) => this.state.subredditCallback(this.state.value, event)}>
-        <input type="text" onChange={this.handleChange} onClick={this.state.reset}/>
+        <input type="text" onChange={this.handleChange}/>
         <button type="submit" id="submit" disabled={!this.state.acceptable}>
           Submit!
         </button>
@@ -82,22 +83,26 @@ class CommentView extends Component {
 
   showComment() {
     this.state.stream.on("comment", (comment) => {
-      // ReactDOM.render(element, document.getElementById('comments'));
-      //dirty mapping below, avert your eyes!
+      //dirty slicing below, avert your eyes!
       let newCommentArray = this.state.comments.slice();
-      let newComment = <div key={'Comment' + this.state.index}>{comment.body}</div>;
+      let newComment = <div key={'Comment' + this.state.index}
+                            className={"beautiful" + this.state.index}>
+                            {comment.body}
+                        </div>;
 
       newCommentArray[this.state.index] = newComment;
-      this.setState({comments: newCommentArray, index: (this.state.index + 1 % 10)});
+      let newIndex = (this.state.index + 1) % 10;
+      this.setState({comments: newCommentArray, index: newIndex});
 
 
       ReactDOM.render(this.state.comments, document.getElementById('comments'));
+      console.log(this.state.index);
     });
   }
 
   render() {
-    //the map method creates a new array with the results of calling a provided function on every element in the calling array
-    //currently fluctuating between two options: predetermine areas for comments to appear, 10 at a time before they start to disappear OR force user to manually click the comment to make them disappear, up to 20 appear before stopping
+    //NOTE: Current focus: Beautiful appearingn/disappearing of comments, hardcode positions? css them up
+    //this automatically clears when back button is pressed, thankfully
     return (
       <div id="comments">Working, I hope</div>
     );
@@ -144,8 +149,8 @@ class App extends Component {
 
       let stream = this.state.client.CommentStream({
         subreddit: subreddit,
-        results: 10,
-        polltime: 1000
+        results: 1,
+        polltime: 1000,
       });
 
       this.setState({selectedSubreddit: subreddit, currentStream: stream, subredditSelected: true});
