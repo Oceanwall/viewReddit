@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import ReactFitText from 'react-fittext';
 import './App.css';
 require("dotenv").config();
 
@@ -59,35 +60,22 @@ class Selector extends Component {
 
 function LoadingScreen(props) {
   return (
-    <div class="spinner">
-      <div class="rect1" />
-      <div class="rect2" />
-      <div class="rect3" />
-      <div class="rect4" />
-      <div class="rect5" />
+    <div className="spinner">
+      <div className="rect1" />
+      <div className="rect2" />
+      <div className="rect3" />
+      <div className="rect4" />
+      <div className="rect5" />
     </div>
   );
 }
 
-class Selected extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      subreddit: props.subreddit,
-      back: props.back,
-    };
-  }
-  render() {
-    return (
-      // mandatory parent element
-      <div>
-        <p>{this.state.subreddit}</p>
-        <button onClick={this.state.back}>
-          Go back
-        </button>
-      </div>
-    );
-  }
+function Selected(props) {
+  return (
+    <button onClick={props.back}>
+      Go back
+    </button>
+  );
 }
 
 class CommentView extends Component {
@@ -116,13 +104,12 @@ class CommentView extends Component {
 
 
       ReactDOM.render(this.state.comments, document.getElementById('comments'));
-      console.log(this.state.index);
     });
   }
 
   render() {
     //NOTE: Current focus: Beautiful appearingn/disappearing of comments, hardcode positions? css them up
-    //NOTE: ALSO, comment length, loading screen while confirming! add as new component
+    //NOTE: ALSO, comment length, comment screen, maybe do something with how text moves when red text appears? hmm
     //this automatically clears when back button is pressed, thankfully
     return (
       <div id="comments">Working, I hope</div>
@@ -176,7 +163,7 @@ class App extends Component {
         polltime: 1000,
       });
 
-      this.setState({selectedSubreddit: subreddit, currentStream: stream, subredditSelected: true, loading: false});
+      this.setState({selectedSubreddit: result.url, currentStream: stream, subredditSelected: true, loading: false});
 
     }).catch((error) => {
       console.log("doesnt exist, ayylmao");
@@ -215,19 +202,24 @@ class App extends Component {
         <div className="bottom">
           {this.state.loading && <LoadingScreen />}
         </div>
+        {/* NOTE: Create minimum font size, finish selected css appearance (figure out why you can't put both selected and reactfittext within one?) */}
+        <div className="top">
+          {this.state.subredditSelected &&
+          <ReactFitText compressor={1}>
+            <div className="titleFont">
+              {this.state.selectedSubreddit}
+            </div>
+          </ReactFitText>}
+          {this.state.subredditSelected &&
+            <Selected
+              back={this.switchSubreddit}
+            />}
+        </div>
         <div>
-          <div>
-          {this.state.subredditSelected && <Selected
-            subreddit={this.state.selectedSubreddit}
-            back={this.switchSubreddit}
-          />}
-          </div>
-          <div>
           {/* might run into a problem here with regard to the back button; well, i'll fix it if it comes to that... */}
           {this.state.subredditSelected && <CommentView
             stream={this.state.currentStream}
           />}
-          </div>
         </div>
       </div>
     );

@@ -28,11 +28,14 @@ input[type="text"]
 }
 .title {
   font-family: 'PT Sans', sans-serif;
-  font-size: 8em;
+  font-size: 9.5vw; /* Maybe make this dynamic? hmmmmm */
 }
 .subtitle {
   font-family: 'Lora', serif;
   font-size: 1em;
+}
+.titleFont {
+  font-family: 'PT Sans', sans-serif;
 }
 /* Forward movement is thanks to https://github.com/IanLunn/Hover/blob/master/css/hover.css */
 .submit {
@@ -93,6 +96,13 @@ input[type="text"]
 .bottom {
   /* Shorthand syntax: row-start, column-start, row-end, column-end */
   grid-area: 4 / 2 / 5 / 3;
+
+  justify-self: start;
+  align-self: start;
+}
+.top {
+  grid-area: 1 / 1 / 3 / 5;
+  width: 100%;
 
   justify-self: start;
   align-self: start;
