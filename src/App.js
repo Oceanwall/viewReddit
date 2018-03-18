@@ -30,7 +30,6 @@ class Selector extends Component {
     this.state.reset();
   }
 
-
   render() {
     return (
       //this syntax is considered to be the "good" way to handle callbacks with multiple parameters, as otherwise, the function automatically calls cause parentheses
@@ -56,6 +55,18 @@ class Selector extends Component {
       </div>
     )
   }
+}
+
+function LoadingScreen(props) {
+  return (
+    <div class="spinner">
+      <div class="rect1" />
+      <div class="rect2" />
+      <div class="rect3" />
+      <div class="rect4" />
+      <div class="rect5" />
+    </div>
+  );
 }
 
 class Selected extends Component {
@@ -138,6 +149,7 @@ class App extends Component {
       subredditSelected: false,
       selectedSubreddit: "",
       acceptableSubreddit: true,
+      loading: false,
     };
 
     //this is strange; do i really need to bind every freaking function in react?
@@ -151,6 +163,7 @@ class App extends Component {
     //subreddit validation here
     //if successful, then adjust state
     //be sure to send response to child indicating if successful or not
+    this.setState({loading: true});
     event.preventDefault();
     //confirmation
     this.state.snoo.getSubreddit(subreddit).fetch()
@@ -163,14 +176,14 @@ class App extends Component {
         polltime: 1000,
       });
 
-      this.setState({selectedSubreddit: subreddit, currentStream: stream, subredditSelected: true});
+      this.setState({selectedSubreddit: subreddit, currentStream: stream, subredditSelected: true, loading: false});
 
     }).catch((error) => {
       console.log("doesnt exist, ayylmao");
 
       //TODO: config this and link to lower levels
-      this.setState({acceptableSubreddit: false});
-    })
+      this.setState({acceptableSubreddit: false, loading: false});
+    });
   }
 
   switchSubreddit() {
@@ -198,6 +211,9 @@ class App extends Component {
             acceptable={this.state.acceptableSubreddit}
             reset={this.resetSelector}
           />}
+        </div>
+        <div className="bottom">
+          {this.state.loading && <LoadingScreen />}
         </div>
         <div>
           <div>
