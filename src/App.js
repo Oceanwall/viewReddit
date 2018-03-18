@@ -35,16 +35,25 @@ class Selector extends Component {
     return (
       //this syntax is considered to be the "good" way to handle callbacks with multiple parameters, as otherwise, the function automatically calls cause parentheses
       //use a button, much more customizable for later
-      <form id="submit" onSubmit={(event) => this.state.subredditCallback(this.state.value, event)}>
-        <input type="text" onChange={this.handleChange}/>
-        <button type="submit" id="submit" disabled={!this.state.acceptable}>
-          Submit!
-        </button>
-        {!this.state.acceptable &&
-          <div className="text-danger">
-            The subreddit you entered was invalid. Try another!
-          </div>}
-      </form>
+      <div>
+        <div className="title">
+          SUBREDDIT VISUALIZER
+        </div>
+        <div className="subtitle">
+          an oceanwall endeavor
+        </div>
+        <form id="submit" onSubmit={(event) => this.state.subredditCallback(this.state.value, event)}>
+          <input type="text" onChange={this.handleChange}/>
+          <br />
+          <button type="submit" id="submit" disabled={!this.state.acceptable}>
+            Submit!
+          </button>
+          {!this.state.acceptable &&
+            <div className="invalid-text">
+              The subreddit you entered was invalid. Try another!
+            </div>}
+        </form>
+      </div>
     )
   }
 }
@@ -181,23 +190,27 @@ class App extends Component {
 
   render() {
     return (
-      <div>
-        <div>
+      <div id="container">
+        <div className="middle">
           {!this.state.subredditSelected && <Selector
             onSubmit={this.subredditHandle}
             acceptable={this.state.acceptableSubreddit}
             reset={this.resetSelector}
           />}
+        </div>
+        <div>
+          <div>
           {this.state.subredditSelected && <Selected
             subreddit={this.state.selectedSubreddit}
             back={this.switchSubreddit}
           />}
-        </div>
-        <div>
+          </div>
+          <div>
           {/* might run into a problem here with regard to the back button; well, i'll fix it if it comes to that... */}
           {this.state.subredditSelected && <CommentView
             stream={this.state.currentStream}
           />}
+          </div>
         </div>
       </div>
     );
