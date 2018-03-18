@@ -45,12 +45,12 @@ class Selector extends Component {
         <form id="submit" onSubmit={(event) => this.state.subredditCallback(this.state.value, event)}>
           <input type="text" onChange={this.handleChange}/>
           <br />
-          <button type="submit" id="submit" disabled={!this.state.acceptable}>
-            Submit!
+          <button type="submit" id="submit" disabled={!this.state.acceptable} className="submit">
+            SUBMIT
           </button>
           {!this.state.acceptable &&
             <div className="invalid-text">
-              The subreddit you entered was invalid. Try another!
+              INVALID SUBREDDIT
             </div>}
         </form>
       </div>
@@ -111,6 +111,7 @@ class CommentView extends Component {
 
   render() {
     //NOTE: Current focus: Beautiful appearingn/disappearing of comments, hardcode positions? css them up
+    //NOTE: ALSO, comment length, loading screen while confirming! add as new component
     //this automatically clears when back button is pressed, thankfully
     return (
       <div id="comments">Working, I hope</div>
