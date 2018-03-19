@@ -15,9 +15,6 @@ input[type="text"]
   font-size: 3em;
   text-align: center;
 }
-.beautiful1 {
-  color: red;
-}
 .invalid-text {
   font-family: 'Source Sans Pro', sans-serif;
   font-size: 1.25em;
@@ -67,6 +64,10 @@ input[type="text"]
   -webkit-transform: translateX(8px);
   transform: translateX(8px);
 }
+.back {
+  margin-left: 10px;
+  margin-bottom: 20px;
+}
 #container {
   display: grid;
 
@@ -81,6 +82,49 @@ input[type="text"]
     "main main main main"
     "main main main main"
     "main main main main";
+}
+.classyAppearance {
+  justify-self: start;
+  align-self: start;
+}
+.location0 {
+  grid-area: 4 / 3 / 5 / 4;
+}
+.location1 {
+  grid-area: 5 / 1 / 6 / 2;
+}
+.location2 {
+  grid-area: 3 / 2 / 4 / 3;
+}
+.location3 {
+  grid-area: 5 / 4 / 6 / 5;
+}
+.location4 {
+  grid-area: 4 / 1 / 5 / 2;
+}
+.location5 {
+  grid-area: 3 / 3 / 4 / 4;
+}
+.location6 {
+  grid-area: 5 / 2 / 6 / 3;
+}
+.location7 {
+  grid-area: 3 / 1 / 4 / 2;
+}
+.location8 {
+  grid-area: 4 / 4 / 5 / 5;
+}
+.location9 {
+  grid-area: 5 / 3 / 6 / 4;
+}
+.location10 {
+  grid-area: 4 / 2 / 5 / 3;
+}
+.location11 {
+  grid-area: 3 / 4 / 4 / 5;
+}
+.fill {
+  grid-area: 3 / 1 / 6 / 5;
 }
 .middle {
   grid-column-start: 2;

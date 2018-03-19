@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import ReactFitText from 'react-fittext';
+import classNames from 'classnames';
 import './App.css';
 require("dotenv").config();
 
@@ -72,7 +73,7 @@ function LoadingScreen(props) {
 
 function Selected(props) {
   return (
-    <button onClick={props.back}>
+    <button onClick={props.back} className="submit back">
       Go back
     </button>
   );
@@ -92,18 +93,26 @@ class CommentView extends Component {
   showComment() {
     this.state.stream.on("comment", (comment) => {
       //dirty slicing below, avert your eyes!
-      let newCommentArray = this.state.comments.slice();
-      let newComment = <div key={'Comment' + this.state.index}
-                            className={"beautiful" + this.state.index}>
-                            {comment.body}
-                        </div>;
+      if (comment.body.length < 200) {
+        let newCommentArray = this.state.comments.slice();
 
-      newCommentArray[this.state.index] = newComment;
-      let newIndex = (this.state.index + 1) % 10;
-      this.setState({comments: newCommentArray, index: newIndex});
+        let classes = classNames({
+          [`location${this.state.index}`]: true,
+          "classyAppearance": true,
+        });
 
+        let newComment = <div key={'Comment' + this.state.index}
+                              className={classes}>
+                              {comment.body}
+                          </div>;
 
-      ReactDOM.render(this.state.comments, document.getElementById('comments'));
+        newCommentArray[this.state.index] = newComment;
+        let newIndex = (this.state.index + 1) % 12;
+        this.setState({comments: newCommentArray, index: newIndex});
+
+        
+        ReactDOM.render(this.state.comments, document.getElementById('container'));
+      }
     });
   }
 
@@ -112,7 +121,7 @@ class CommentView extends Component {
     //NOTE: ALSO, comment length, comment screen, maybe do something with how text moves when red text appears? hmm
     //this automatically clears when back button is pressed, thankfully
     return (
-      <div id="comments">Working, I hope</div>
+      <div>Working, I hope</div>
     );
   }
 }
@@ -159,7 +168,7 @@ class App extends Component {
 
       let stream = this.state.client.CommentStream({
         subreddit: subreddit,
-        results: 1,
+        results: 2,
         polltime: 1000,
       });
 
@@ -202,7 +211,6 @@ class App extends Component {
         <div className="bottom">
           {this.state.loading && <LoadingScreen />}
         </div>
-        {/* NOTE: Create minimum font size, finish selected css appearance (figure out why you can't put both selected and reactfittext within one?) */}
         <div className="top">
           {this.state.subredditSelected &&
           <ReactFitText compressor={1}>
@@ -215,7 +223,7 @@ class App extends Component {
               back={this.switchSubreddit}
             />}
         </div>
-        <div>
+        <div className="fill" id="comments">
           {/* might run into a problem here with regard to the back button; well, i'll fix it if it comes to that... */}
           {this.state.subredditSelected && <CommentView
             stream={this.state.currentStream}
