@@ -86,6 +86,7 @@ class CommentView extends Component {
       stream: props.stream,
       comments: [],
       index: 0,
+      filledOnce: false,
     }
     this.showComment();
   }
@@ -96,22 +97,34 @@ class CommentView extends Component {
       if (comment.body.length < 200) {
         let newCommentArray = this.state.comments.slice();
 
-        let classes = classNames({
-          [`location${this.state.index}`]: true,
-          "classyAppearance": true,
-        });
+        // let classes = classNames({
+        //   [`location${this.state.index}`]: true,
+        //   "classyAppearance": true,
+        // });
 
         let newComment = <div key={'Comment' + this.state.index}
-                              className={classes}>
+                              className="classyAppearance">
                               {comment.body}
                           </div>;
 
         newCommentArray[this.state.index] = newComment;
-        let newIndex = (this.state.index + 1) % 12;
+        let newIndex = (this.state.index + 1) % 16;
+        if (newIndex === 0 && this.state.filledOnce === false) {
+          this.setState({filledOnce: true});
+        }
         this.setState({comments: newCommentArray, index: newIndex});
 
-        
-        ReactDOM.render(this.state.comments, document.getElementById('container'));
+        if (!this.state.filledOnce) {
+          for (let i = 0; i < this.state.index; i++) {
+            ReactDOM.render(this.state.comments[i], document.getElementById(`location${i}`));
+          }
+        }
+        else {
+          for (let i = 0; i < 16; i++) {
+            ReactDOM.render(this.state.comments[i], document.getElementById(`location${i}`));
+          }
+        }
+        // ReactDOM.render(this.state.comments, document.getElementById(`location${this.state.index}`));
       }
     });
   }
@@ -121,7 +134,7 @@ class CommentView extends Component {
     //NOTE: ALSO, comment length, comment screen, maybe do something with how text moves when red text appears? hmm
     //this automatically clears when back button is pressed, thankfully
     return (
-      <div>Working, I hope</div>
+      <div />
     );
   }
 }
@@ -223,7 +236,23 @@ class App extends Component {
               back={this.switchSubreddit}
             />}
         </div>
-        <div className="fill" id="comments">
+        <div id="location0">Working, I hope</div>
+        <div id="location1">Working, I hope</div>
+        <div id="location2">Working, I hope</div>
+        <div id="location3">Working, I hope</div>
+        <div id="location4">Working, I hope</div>
+        <div id="location5">Working, I hope</div>
+        <div id="location6">Working, I hope</div>
+        <div id="location7">Working, I hope</div>
+        <div id="location8">Working, I hope</div>
+        <div id="location9">Working, I hope</div>
+        <div id="location10">Working, I hope</div>
+        <div id="location11">Working, I hope</div>
+        <div id="location12">Working, I hope</div>
+        <div id="location13">Working, I hope</div>
+        <div id="location14">Working, I hope</div>
+        <div id="location15">Working, I hope</div>
+        <div>
           {/* might run into a problem here with regard to the back button; well, i'll fix it if it comes to that... */}
           {this.state.subredditSelected && <CommentView
             stream={this.state.currentStream}
