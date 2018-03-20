@@ -97,13 +97,15 @@ class CommentView extends Component {
       if (comment.body.length < 200) {
         let newCommentArray = this.state.comments.slice();
 
-        // let classes = classNames({
-        //   [`location${this.state.index}`]: true,
-        //   "classyAppearance": true,
-        // });
+        let randomFormatNumber = Math.floor((Math.random() * 4) + 1);
+
+        let commentClass = classNames({
+          "classyAppearance": true,
+          [`format${randomFormatNumber}`]: true,
+        });
 
         let newComment = <div key={'Comment' + this.state.index}
-                              className="classyAppearance">
+                              className={commentClass}>
                               {comment.body}
                           </div>;
 
@@ -113,6 +115,8 @@ class CommentView extends Component {
           this.setState({filledOnce: true});
         }
         this.setState({comments: newCommentArray, index: newIndex});
+
+        //NOTE: CURRENT FOCUS: make pretty, make animations, make look nice.
 
         if (!this.state.filledOnce) {
           for (let i = 0; i < this.state.index; i++) {
@@ -130,12 +134,7 @@ class CommentView extends Component {
   }
 
   render() {
-    //NOTE: Current focus: Beautiful appearingn/disappearing of comments, hardcode positions? css them up
-    //NOTE: ALSO, comment length, comment screen, maybe do something with how text moves when red text appears? hmm
-    //this automatically clears when back button is pressed, thankfully
-    return (
-      <div />
-    );
+    return null;
   }
 }
 
@@ -236,22 +235,24 @@ class App extends Component {
               back={this.switchSubreddit}
             />}
         </div>
-        <div id="location0">Working, I hope</div>
-        <div id="location1">Working, I hope</div>
-        <div id="location2">Working, I hope</div>
-        <div id="location3">Working, I hope</div>
-        <div id="location4">Working, I hope</div>
-        <div id="location5">Working, I hope</div>
-        <div id="location6">Working, I hope</div>
-        <div id="location7">Working, I hope</div>
-        <div id="location8">Working, I hope</div>
-        <div id="location9">Working, I hope</div>
-        <div id="location10">Working, I hope</div>
-        <div id="location11">Working, I hope</div>
-        <div id="location12">Working, I hope</div>
-        <div id="location13">Working, I hope</div>
-        <div id="location14">Working, I hope</div>
-        <div id="location15">Working, I hope</div>
+        {/* Yes, I know this is atrocious, but im not sure how to fix it */}
+        {/* NOTE: Current priority: Look into reconfiguring how the divs are posted? Maybe have the component return only one div, but have the component do it multipe times? look into that. */}
+        {this.state.subredditSelected && <div id="location0" />}
+        {this.state.subredditSelected && <div id="location1" />}
+        {this.state.subredditSelected && <div id="location2" />}
+        {this.state.subredditSelected && <div id="location3" />}
+        {this.state.subredditSelected && <div id="location4" />}
+        {this.state.subredditSelected && <div id="location5" />}
+        {this.state.subredditSelected && <div id="location6" />}
+        {this.state.subredditSelected && <div id="location7" />}
+        {this.state.subredditSelected && <div id="location8" />}
+        {this.state.subredditSelected && <div id="location9" />}
+        {this.state.subredditSelected && <div id="location10" />}
+        {this.state.subredditSelected && <div id="location11" />}
+        {this.state.subredditSelected && <div id="location12" />}
+        {this.state.subredditSelected && <div id="location13" />}
+        {this.state.subredditSelected && <div id="location14" />}
+        {this.state.subredditSelected && <div id="location15" />}
         <div>
           {/* might run into a problem here with regard to the back button; well, i'll fix it if it comes to that... */}
           {this.state.subredditSelected && <CommentView
