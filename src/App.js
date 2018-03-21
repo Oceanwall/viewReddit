@@ -93,105 +93,63 @@ class CommentView extends Component {
 
   showComments() {
     this.state.stream.on("comment", (comment) => {
-      //dirty slicing below, avert your eyes!
+
       if (comment.body.length < 200) {
         let newCommentArray = this.state.comments.slice();
 
-        let randomFormatNumber = Math.floor((Math.random() * 4) + 1);
+        //let's have 3 random format numbers for now. might need more in the future
+        let randomFormatNumbers = [];
+        for (let i = 0; i < 3; i++) {
+            randomFormatNumbers[i] = Math.floor((Math.random() * 4) + 1);
+        }
 
         let commentClass = classNames({
           "classyAppearance": true,
-          [`format${randomFormatNumber}`]: true,
+          [`randomFormat1${randomFormatNumbers[0]}`]: true,
+          [`randomFormat2${randomFormatNumbers[1]}`]: true,
+          [`randomFormat3${randomFormatNumbers[2]}`]: true,
         });
+        let divLocation = `location${this.state.id}`;
 
-        let newComment = <div key={'Comment' + this.state.index}
-                              className={commentClass}>
-                              {comment.body}
-                          </div>;
-
+        let newComment = <Comment
+          location={divLocation}
+          commentClass={commentClass}
+          key={this.state.index}
+          body={comment.body}
+        />
         newCommentArray[this.state.index] = newComment;
+
         let newIndex = (this.state.index + 1) % 16;
         if (newIndex === 0 && this.state.filledOnce === false) {
           this.setState({filledOnce: true});
         }
         this.setState({comments: newCommentArray, index: newIndex});
-
-        if (!this.state.filledOnce) {
-          for (let i = 0; i < this.state.index; i++) {
-            this.createComment(i);
-          }
-        }
-        else {
-          for (let i = 0; i < 16; i++) {
-            ReactDOM.render(this.state.comments[i], document.getElementById(`location${i}`));
-          }
-        }
-        // ReactDOM.render(this.state.comments, document.getElementById(`location${this.state.index}`));
       }
     });
+  }
+
+    render() {
+      return (
+        <div>
+          {this.state.comments}
+        </div>
+      )
+    }
 
     //TODO: After a bit of experimentation, it has become abundantly clear to me that as is, this will not work.
     //Not only is the presence of 16 divs in the main render component area ugly, but it is also incorrect and goes against react design principles
     //As such, the current focus is on redesigning this specific component.
     //Using a renderComment() method, the main render of this component should render comments depending on the state of a main comments array.
     //If this does not work with the css, changes will be made as necessary to compensate. I am committed to good design.
-  }
-
-  createComment(blockId) {
-    let fixedId = `location${blockId}`;
-    console.log("wrking");
-    return (
-      <div id={fixedId}>
-        {this.state.comments[blockId]}
-      </div>
-    );
-
-  }
-
-  render() {
-    this.state.stream.on("comment", (comment) => {
-      //dirty slicing below, avert your eyes!
-      if (comment.body.length < 200) {
-        let newCommentArray = this.state.comments.slice();
-
-        let randomFormatNumber = Math.floor((Math.random() * 4) + 1);
-
-        let commentClass = classNames({
-          "classyAppearance": true,
-          [`format${randomFormatNumber}`]: true,
-        });
-
-        let newComment = <div key={'Comment' + this.state.index}
-                              className={commentClass}>
-                              {comment.body}
-                          </div>;
-
-        newCommentArray[this.state.index] = newComment;
-        let newIndex = (this.state.index + 1) % 16;
-        if (newIndex === 0 && this.state.filledOnce === false) {
-          this.setState({filledOnce: true});
-        }
-        this.setState({comments: newCommentArray, index: newIndex});
-
-        //NOTE: CURRENT FOCUS: make pretty, make animations, make look nice.
-
-        if (!this.state.filledOnce) {
-          for (let i = 0; i < this.state.index; i++) {
-            commentBlocks[i] = this.createComment(i);
-          }
-        }
-        else {
-          for (let i = 0; i < 16; i++) {
-            ReactDOM.render(this.state.comments[i], document.getElementById(`location${i}`));
-          }
-        }
-        // ReactDOM.render(this.state.comments, document.getElementById(`location${this.state.index}`));
-      }
-    });
-    return null;
-  }
 }
 
+function Comment(props) {
+  return (
+    <div id={props.location} className={props.commentClass}>
+      {props.body}
+    </div>
+  );
+}
 
 class App extends Component {
   constructor(props) {
