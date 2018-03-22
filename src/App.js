@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
 import ReactFitText from 'react-fittext';
 import classNames from 'classnames';
+import { CSSTransitionGroup } from 'react-transition-group';
 import './App.css';
 require("dotenv").config();
 
@@ -105,7 +106,7 @@ class CommentView extends Component {
 
         let commentClass = classNames({
           "classyAppearance": true,
-          [`randomFormat1${randomFormatNumbers[0]}`]: true,
+          [`color${randomFormatNumbers[0]}`]: true,
           [`randomFormat2${randomFormatNumbers[1]}`]: true,
           [`randomFormat3${randomFormatNumbers[2]}`]: true,
         });
@@ -137,10 +138,20 @@ class CommentView extends Component {
     }
 }
 
+//TODO: Convert newComment (above) using a wrapper component, wrapping together both CSSTransitionGroup and Comment into one component
+// If the gods be good, this should fix the css messups that CSSTransitionGroup is causing.
+// also, NOTE: that transition leave doesnt work. Work on facilitating transition appear and disappear? hmmm
 function Comment(props) {
   return (
     <div id={props.location} className={props.commentClass}>
-      {props.body}
+      <CSSTransitionGroup
+        transitionName="transition1"
+        transitionAppear={true}
+        transitionAppearTimeout={500}
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={300}>
+        {props.body}
+      </CSSTransitionGroup>
     </div>
   );
 }

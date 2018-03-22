@@ -85,25 +85,47 @@ input[type="text"]
 }
 /* Color gradients obtained from uigradients.com */
 /* NOTE; these are kinda ugly though :( */
-.format1 {
+.color1 {
   background: #74ebd5;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #ACB6E5, #74ebd5);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #ACB6E5, #74ebd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-.format2 {
+.color2 {
   background: #e1eec3;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #f05053, #e1eec3);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #f05053, #e1eec3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-.format3 {
+.color3 {
   background: #800080;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #ffc0cb, #800080);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #ffc0cb, #800080); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-.format4 {
+.color4 {
   background: #00b09b;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #96c93d, #00b09b);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #96c93d, #00b09b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.transition1-appear {
+  opacity: 0.01;
+}
+.transition1-appear.transition1-appear-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+.transition1-enter {
+  opacity: 0.01;
+}
+.transition1-enter.transition1-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+.transition1-leave {
+  opacity: 1;
+}
+
+.transition1-leave.transition1-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
 }
 #location6 {
   grid-area: location6;
