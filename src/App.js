@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 import ReactFitText from 'react-fittext';
 import classNames from 'classnames';
 import './App.css';
@@ -109,7 +109,7 @@ class CommentView extends Component {
           [`randomFormat2${randomFormatNumbers[1]}`]: true,
           [`randomFormat3${randomFormatNumbers[2]}`]: true,
         });
-        let divLocation = `location${this.state.id}`;
+        let divLocation = `location${this.state.index}`;
 
         let newComment = <Comment
           location={divLocation}
@@ -130,17 +130,11 @@ class CommentView extends Component {
 
     render() {
       return (
-        <div>
+        <div className="fill">
           {this.state.comments}
         </div>
       )
     }
-
-    //TODO: After a bit of experimentation, it has become abundantly clear to me that as is, this will not work.
-    //Not only is the presence of 16 divs in the main render component area ugly, but it is also incorrect and goes against react design principles
-    //As such, the current focus is on redesigning this specific component.
-    //Using a renderComment() method, the main render of this component should render comments depending on the state of a main comments array.
-    //If this does not work with the css, changes will be made as necessary to compensate. I am committed to good design.
 }
 
 function Comment(props) {
@@ -232,7 +226,7 @@ class App extends Component {
             reset={this.resetSelector}
           />}
         </div>
-        <div className="bottom">
+        <div className="lower">
           {this.state.loading && <LoadingScreen />}
         </div>
         <div className="top">
@@ -247,25 +241,6 @@ class App extends Component {
               back={this.switchSubreddit}
             />}
         </div>
-        {/* Yes, I know this is atrocious, but im not sure how to fix it */}
-        {/* NOTE: Current priority: Look into reconfiguring how the divs are posted? Maybe have the component return only one div, but have the component do it multipe times? look into that. */}
-        {/* {this.state.subredditSelected && <div id="location0" />}
-        {this.state.subredditSelected && <div id="location1" />}
-        {this.state.subredditSelected && <div id="location2" />}
-        {this.state.subredditSelected && <div id="location3" />}
-        {this.state.subredditSelected && <div id="location4" />}
-        {this.state.subredditSelected && <div id="location5" />}
-        {this.state.subredditSelected && <div id="location6" />}
-        {this.state.subredditSelected && <div id="location7" />}
-        {this.state.subredditSelected && <div id="location8" />}
-        {this.state.subredditSelected && <div id="location9" />}
-        {this.state.subredditSelected && <div id="location10" />}
-        {this.state.subredditSelected && <div id="location11" />}
-        {this.state.subredditSelected && <div id="location12" />}
-        {this.state.subredditSelected && <div id="location13" />}
-        {this.state.subredditSelected && <div id="location14" />}
-        {this.state.subredditSelected && <div id="location15" />} */}
-          {/* might run into a problem here with regard to the back button; well, i'll fix it if it comes to that... */}
         {this.state.subredditSelected && <CommentView
           stream={this.state.currentStream}
         />}
