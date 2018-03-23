@@ -95,7 +95,7 @@ class CommentView extends Component {
   showComments() {
     this.state.stream.on("comment", (comment) => {
 
-      if (comment.body.length < 200) {
+      if (comment.body.length < 175) {
         let newCommentArray = this.state.comments.slice();
 
         //let's have 3 random format numbers for now. might need more in the future
@@ -107,7 +107,7 @@ class CommentView extends Component {
         let commentClass = classNames({
           "classyAppearance": true,
           [`color${randomFormatNumbers[0]}`]: true,
-          [`randomFormat2${randomFormatNumbers[1]}`]: true,
+          [`font${randomFormatNumbers[1]}`]: true,
           [`randomFormat3${randomFormatNumbers[2]}`]: true,
         });
         let divLocation = `location${this.state.index}`;
@@ -117,7 +117,7 @@ class CommentView extends Component {
           newCommentArray[this.state.index] = null;
           this.setState({comments: newCommentArray});
         }
-
+        
         let newComment = <CommentWrapper
           location={divLocation}
           commentClass={commentClass}
