@@ -112,11 +112,17 @@ class CommentView extends Component {
         });
         let divLocation = `location${this.state.index}`;
 
-        let newComment = <Comment
+        //allow enter and leave transitions
+        if (this.state.filledOnce) {
+          newCommentArray[this.state.index] = null;
+          this.setState({comments: newCommentArray});
+        }
+
+        let newComment = <CommentWrapper
           location={divLocation}
           commentClass={commentClass}
-          key={this.state.index}
           body={comment.body}
+          key={this.state.index}
         />
         newCommentArray[this.state.index] = newComment;
 
@@ -138,20 +144,33 @@ class CommentView extends Component {
     }
 }
 
-//TODO: Convert newComment (above) using a wrapper component, wrapping together both CSSTransitionGroup and Comment into one component
-// If the gods be good, this should fix the css messups that CSSTransitionGroup is causing.
-// also, NOTE: that transition leave doesnt work. Work on facilitating transition appear and disappear? hmmm
-function Comment(props) {
+// NOTE: Current focus; Make comments look pretty (make appearances and leaving better looking, randomize that)
+// randomize fonts? Centralize fonts (maybe adjust font sizes as necessary? dynamic?) we're almost done here.
+// don't use 100% height and width. that's uglyyyy
+
+function CommentWrapper(props) {
   return (
-    <div id={props.location} className={props.commentClass}>
+    <div id={props.location} >
       <CSSTransitionGroup
         transitionName="transition1"
         transitionAppear={true}
         transitionAppearTimeout={500}
         transitionEnterTimeout={500}
-        transitionLeaveTimeout={300}>
-        {props.body}
+        transitionLeaveTimeout={500} >
+        {/* NOTE: Comment can't be replaced w/ just props.body. Look into this? */}
+        <Comment
+          body={props.body}
+          commentClass={props.commentClass}
+        />
       </CSSTransitionGroup>
+    </div>
+  );
+}
+
+function Comment(props) {
+  return (
+    <div className={props.commentClass}>
+      {props.body}
     </div>
   );
 }
