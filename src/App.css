@@ -83,9 +83,9 @@ input[type="text"]
 }
 .classyAppearance {
   height: 95%;
-  width: 24vw;
+  width: 24.5vw;
 
-  font-size:calc(16px + .3vw);
+  font-size:calc(14px + .3vw);
 
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -121,7 +121,7 @@ input[type="text"]
 }
 .font2 {
   font-family: 'Rock Salt', cursive;
-  font-size:calc(11px + .2vw);
+  font-size:calc(9px + .2vw);
 }
 .font3 {
   font-family: 'Indie Flower', cursive;
