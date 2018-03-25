@@ -1,5 +1,5 @@
+//Necessary imports from node_modules
 import React, { Component } from 'react';
-// import ReactDOM from 'react-dom';
 import ReactFitText from 'react-fittext';
 import classNames from 'classnames';
 import { CSSTransitionGroup } from 'react-transition-group';
@@ -7,32 +7,34 @@ import './App.css';
 require("dotenv").config();
 
 const Snoowrap = require("snoowrap");
-const Snoostorm = require("snoostorm"); //basic snoowrap shit
+const Snoostorm = require("snoostorm");
 
+//Handles the subreddit selection interface
 class Selector extends Component {
   constructor(props) {
     super(props);
     this.state = {
       value: '',
-      subredditCallback: props.onSubmit, //store callback function in state
+      subredditCallback: props.onSubmit, //Store callback function in state
       acceptable: props.acceptable,
       reset: props.reset,
     };
 
-    //this may seem slightly inefficient, but I trust the react docs
     this.handleChange = this.handleChange.bind(this);
   }
 
-  //Because the constructor is only called the first time that the component renders, this method is necessary to consistently update the state from the parent
+  //Updates state when parent's acceptable state property changes
   componentWillReceiveProps(nextProps) {
     this.setState({acceptable: nextProps.acceptable});
   }
 
+  //Active handling of text within the input box.
   handleChange(event) {
     this.setState({value: event.target.value});
     this.state.reset();
   }
 
+  //Renders the subreddit selection interface
   render() {
     return (
       <div>
@@ -49,7 +51,6 @@ class Selector extends Component {
             Invalid Subreddit
           </div>
         }
-        {/* this syntax is considered to be the "good" way to handle callbacks with multiple parameters */}
         <form id="submit" onSubmit={(event) => this.state.subredditCallback(this.state.value, event)}>
           <input type="text" onChange={this.handleChange} className={!this.state.acceptable ? "invalidSubreddit" : undefined}/>
           <br />
@@ -62,6 +63,7 @@ class Selector extends Component {
   }
 }
 
+//Handles the "GO BACK" buttons for the loading screen and the Selected interfaces
 function BackButton(props) {
   return (
     <button onClick={props.back} className="submit back">
@@ -70,6 +72,7 @@ function BackButton(props) {
   );
 }
 
+//Shows the comments once a snoostream connection has been made and comments have been obtained
 class CommentView extends Component {
   constructor(props) {
     super(props);
@@ -81,18 +84,23 @@ class CommentView extends Component {
       loading: props.loading,
       onFirstComment: props.onFirstComment,
     }
-    this.showComments();
+    this.showComments(); //kicks off comment collection
   }
 
+  //Takes in the stream's comments, audits them for length, and formats them before displaying them.
+  //Also controls when the loading screen ends
   showComments() {
     this.state.stream.on("comment", (comment) => {
+      //Comment length must be between 50 and 150 chararcters
       if (comment.body.length < 150 && comment.body.length > 50) {
         let newCommentArray = this.state.comments.slice();
 
+        //Ends loading screen
         if (this.state.loading) {
           this.state.onFirstComment();
         }
 
+        //Random formatting for comments
         let randomFormatNumber1 = Math.floor((Math.random() * 4) + 1);
         let randomFormatNumber2 = Math.floor((Math.random() * 4) + 1);
 
@@ -103,12 +111,13 @@ class CommentView extends Component {
         });
         let divLocation = `location${this.state.index}`;
 
-        //allow enter and leave transitions
+        //Removal of old comments allows for enter and leave transitions
         if (this.state.filledOnce) {
           newCommentArray[this.state.index] = null;
           this.setState({comments: newCommentArray});
         }
 
+        //Wrapper is necessary to hold both Comment and CSSTransitionGroup
         let newComment = <CommentWrapper
           location={divLocation}
           commentClass={commentClass}
@@ -126,17 +135,17 @@ class CommentView extends Component {
     });
   }
 
-    render() {
-      return (
-        <div className="fill">
-          {this.state.comments}
-        </div>
-      )
-    }
+  //Renders the array of comments
+  render() {
+    return (
+      <div className="fill">
+        {this.state.comments}
+      </div>
+    )
+  }
 }
 
-// NOTE: Current focus: Comment CSS? Fix red invalid text? Add some more randomizable features? We are almost done here.
-
+//Wrapper class for CSSTransitionGroup and Comment
 function CommentWrapper(props) {
   return (
     <div id={props.location}>
@@ -155,6 +164,7 @@ function CommentWrapper(props) {
   );
 }
 
+//Creates raw comment, with styling and content
 function Comment(props) {
   return (
     <div className={props.commentClass}>
@@ -163,18 +173,21 @@ function Comment(props) {
   );
 }
 
+//Main parent class; controls individual components
 class App extends Component {
   constructor(props) {
     super(props);
+    //creates snoowrap instance
     const snoowrap = new Snoowrap({
-      userAgent: "commentVisualizerv3318",
+      userAgent: "commentVisualizer737362",
       clientId: process.env.REACT_APP_CLIENT_ID,
       clientSecret: process.env.REACT_APP_CLIENT_SECRET,
       username: process.env.REACT_APP_REDDIT_USER,
       password: process.env.REACT_APP_REDDIT_PASS
     });
-
+    //uses snoowrap instance for snoostorm instance
     let client = new Snoostorm(snoowrap);
+
     this.state = {
       snoo : snoowrap,
       client: client,
@@ -184,58 +197,61 @@ class App extends Component {
       loading: false,
     };
 
-    //this is strange; do i really need to bind every freaking function in react?
     this.subredditHandle = this.handleSelectedSubreddit.bind(this);
     this.switchSubreddit = this.switchSubreddit.bind(this);
     this.resetSelector = this.resetSelector.bind(this);
     this.onFirstComment = this.handleFirstComment.bind(this);
   }
 
-  //ends loading screen, avoids forcing user to have to stare at empty screen for long time
+  //Ends loading screen, ensures that user does not have to start at empty screen during loading process
   handleFirstComment() {
     this.setState({loading: false});
   }
 
   handleSelectedSubreddit(subreddit, event) {
-    //subreddit validation here
-    //if successful, then adjust state
-    //be sure to send response to child indicating if successful or not
+    //Subreddit validation
     this.setState({loading: true});
     event.preventDefault();
-    //confirmation
+
+    //Getting confirmation from reddit servers
     this.state.snoo.getSubreddit(subreddit).fetch()
     .then((result) => {
+      //If successful, create the CommentStream and prepare to provide comments
       let stream = this.state.client.CommentStream({
         subreddit: subreddit,
         results: 5,
         polltime: 1000,
       });
-
       this.setState({selectedSubreddit: result.url, currentStream: stream, subredditSelected: true});
     }).catch((error) => {
+      //If subreddit does not exist, edit state properties to indicate this
       this.setState({acceptableSubreddit: false, loading: false});
     });
   }
 
+  //Called when either of the "Back" buttons are pressed
+  //Ends the SnooStream and resets to Selector interface
   switchSubreddit() {
     this.state.currentStream.emit("stop");
-    //end snoostream
 
-    this.setState({subredditSelected: false,
-                   selectedSubreddit: "",
-                   loading: false,
-                 });
+    this.setState({
+      subredditSelected: false,
+      selectedSubreddit: "",
+      loading: false,
+    });
   }
 
-  //called when input box is clicked, removes red indicator
+  //Called when input box is clicked, removes red indicator
   resetSelector() {
     this.setState({acceptableSubreddit: true});
   }
 
-
+  //Main render function for the entire application
+  //Uses many conditional renders to ensure that only certain components are visible at each stage
   render() {
     return (
       <div id="container">
+        {/* Selector Interface */}
         <div className="middle">
           {(!this.state.subredditSelected && !this.state.loading) && <Selector
             onSubmit={this.subredditHandle}
@@ -243,6 +259,7 @@ class App extends Component {
             reset={this.resetSelector}
           />}
         </div>
+        {/* Loading Screen */}
         <div className="loading">
           {(this.state.loading) && <ReactFitText compressor={1}>
             <div className="bounce loadingText">
@@ -253,6 +270,7 @@ class App extends Component {
               back={this.switchSubreddit}
             />}
         </div>
+        {/* Selected Interface */}
         <div className="top">
           {(this.state.subredditSelected && !this.state.loading) &&
             <ReactFitText compressor={1}>
@@ -265,6 +283,7 @@ class App extends Component {
               back={this.switchSubreddit}
             />}
         </div>
+        {/* CommentView interface */}
         {(this.state.subredditSelected) && <CommentView
           stream={this.state.currentStream}
           loading={this.state.loading}

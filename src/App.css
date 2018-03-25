@@ -235,8 +235,7 @@ input[type="text"]
   align-self: start;
 }
 /* Bounce, from Animate.css from Daniel Eden
-   Slightly adjusted to allow for infinite bounce with delay between the bounces.
-*/
+   Slightly adjusted to allow for infinite bounce with delay between the bounces. */
 @-webkit-keyframes bounce {
   from,
   10%,
