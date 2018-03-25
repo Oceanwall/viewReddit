@@ -15,17 +15,15 @@ input[type="text"]
   font-size: 3em;
   text-align: center;
 }
-.invalid-text {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 1.25em;
-
-  margin-top: 10px;
-
+.invalidSubreddit {
+  border: 3px solid red;
+}
+.invalidText {
   color: red;
 }
 .title {
   font-family: 'PT Sans', sans-serif;
-  font-size: 9.5vw; /* NOTE: Maybe make this dynamic? hmmmmm */
+  font-size: calc(15px + 10vh); /* NOTE: Maybe make this dynamic? hmmmmm */
 }
 .subtitle {
   font-family: 'Lora', serif;
@@ -87,7 +85,7 @@ input[type="text"]
   height: 95%;
   width: 24.5vw;
 
-  font-size:calc(14px + .3vw);
+  font-size:calc(16px + .3vw);
 
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -95,38 +93,35 @@ input[type="text"]
   vertical-align: center;
   text-align: center;
 
-  /* margin: auto; */
-
-  border: 1px solid black;
+  border: 1px groove black;
 }
 /* Color gradients obtained from uigradients.com */
-/* NOTE; these are kinda ugly though :( */
 .color1 {
-  background: #74ebd5;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #ACB6E5, #74ebd5);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #ACB6E5, #74ebd5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #74ebd5;
+  background: -webkit-linear-gradient(to right, #ACB6E5, #74ebd5);
+  background: linear-gradient(to right, #ACB6E5, #74ebd5);
 }
 .color2 {
-  background: #e1eec3;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #f05053, #e1eec3);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #f05053, #e1eec3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #e1eec3;
+  background: -webkit-linear-gradient(to right, #f05053, #e1eec3);
+  background: linear-gradient(to right, #f05053, #e1eec3);
 }
 .color3 {
-  background: #800080;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #ffc0cb, #800080);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #ffc0cb, #800080); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #F2994A;
+  background: -webkit-linear-gradient(to right, #F2C94C, #F2994A);
+  background: linear-gradient(to right, #F2C94C, #F2994A);
 }
 .color4 {
-  background: #00b09b;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #96c93d, #00b09b);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to right, #96c93d, #00b09b); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: #00b09b;
+  background: -webkit-linear-gradient(to right, #96c93d, #00b09b);
+  background: linear-gradient(to right, #96c93d, #00b09b);
 }
 .font1 {
   font-family: 'Waiting for the Sunrise', cursive;
 }
 .font2 {
   font-family: 'Rock Salt', cursive;
-  font-size:calc(10px + .2vw);
+  font-size:calc(11px + .2vw);
 }
 .font3 {
   font-family: 'Indie Flower', cursive;
@@ -134,24 +129,24 @@ input[type="text"]
 .font4 {
   font-family: 'Shadows Into Light', cursive;
 }
-.transition1-appear {
+.transition-appear {
   opacity: 0.01;
 }
-.transition1-appear.transition1-appear-active {
+.transition-appear.transition-appear-active {
   opacity: 1;
   transition: opacity 500ms ease-in;
 }
-.transition1-enter {
+.transition-enter {
   opacity: 0.01;
 }
-.transition1-enter.transition1-enter-active {
+.transition-enter.transition-enter-active {
   opacity: 1;
   transition: opacity 500ms ease-in;
 }
-.transition1-leave {
+.transition-leave {
   opacity: 1;
 }
-.transition1-leave.transition1-leave-active {
+.transition-leave.transition-leave-active {
   opacity: 0.01;
   transition: opacity 300ms ease-in;
 }
@@ -215,7 +210,6 @@ input[type="text"]
     "location14 location3 location15 location5"
     "location2 location12 location8 location11"
     "location7 location0 location9 location4";
-
 }
 .middle {
   grid-area: 2 / 2 / 4 / 4;
@@ -232,13 +226,6 @@ input[type="text"]
 
   justify-self: center;
   align-self: start;
-}
-.lower {
-  /* Shorthand syntax: row-start, column-start, row-end, column-end */
-  grid-area: 4 / 2 / 5 / 3;
-
-  justify-self: start;
-  align-self: center;
 }
 .top {
   grid-area: 1 / 1 / 2 / 5;

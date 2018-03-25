@@ -35,25 +35,27 @@ class Selector extends Component {
 
   render() {
     return (
-      //this syntax is considered to be the "good" way to handle callbacks with multiple parameters, as otherwise, the function automatically calls cause parentheses
-      //use a button, much more customizable for later
       <div>
         <div className="title">
           SUBREDDIT VISUALIZER
         </div>
-        <div className="subtitle">
-          an oceanwall endeavor
-        </div>
+        {this.state.acceptable &&
+          <div className="subtitle">
+            an oceanwall endeavor
+          </div>
+        }
+        {!this.state.acceptable &&
+          <div className="subtitle invalidText">
+            Invalid Subreddit
+          </div>
+        }
+        {/* this syntax is considered to be the "good" way to handle callbacks with multiple parameters */}
         <form id="submit" onSubmit={(event) => this.state.subredditCallback(this.state.value, event)}>
-          <input type="text" onChange={this.handleChange}/>
+          <input type="text" onChange={this.handleChange} className={!this.state.acceptable ? "invalidSubreddit" : undefined}/>
           <br />
-          <button type="submit" id="submit" disabled={!this.state.acceptable} className="submit">
+          <button type="submit" disabled={!this.state.acceptable} className="submit">
             SUBMIT
           </button>
-          {!this.state.acceptable &&
-            <div className="invalid-text">
-              INVALID SUBREDDIT
-            </div>}
         </form>
       </div>
     )
@@ -84,25 +86,20 @@ class CommentView extends Component {
 
   showComments() {
     this.state.stream.on("comment", (comment) => {
-
-      if (comment.body.length < 150) {
+      if (comment.body.length < 150 && comment.body.length > 50) {
         let newCommentArray = this.state.comments.slice();
 
         if (this.state.loading) {
           this.state.onFirstComment();
         }
 
-        //let's have 3 random format numbers for now. might need more in the future
-        let randomFormatNumbers = [];
-        for (let i = 0; i < 3; i++) {
-            randomFormatNumbers[i] = Math.floor((Math.random() * 4) + 1);
-        }
+        let randomFormatNumber1 = Math.floor((Math.random() * 4) + 1);
+        let randomFormatNumber2 = Math.floor((Math.random() * 4) + 1);
 
         let commentClass = classNames({
           "classyAppearance": true,
-          [`color${randomFormatNumbers[0]}`]: true,
-          [`font${randomFormatNumbers[1]}`]: true,
-          [`randomFormat3${randomFormatNumbers[2]}`]: true,
+          [`color${randomFormatNumber1}`]: true,
+          [`font${randomFormatNumber2}`]: true,
         });
         let divLocation = `location${this.state.index}`;
 
@@ -138,19 +135,17 @@ class CommentView extends Component {
     }
 }
 
-// NOTE: Current focus; Make comments look pretty (make appearances and leaving better looking, randomize that)
-// randomize fonts? Centralize fonts (maybe adjust font sizes as necessary? dynamic?) we're almost done here.
+// NOTE: Current focus: Comment CSS? Fix red invalid text? Add some more randomizable features? We are almost done here.
 
 function CommentWrapper(props) {
   return (
     <div id={props.location}>
       <CSSTransitionGroup
-        transitionName="transition1"
+        transitionName="transition"
         transitionAppear={true}
         transitionAppearTimeout={500}
         transitionEnterTimeout={500}
         transitionLeaveTimeout={500} >
-        {/* NOTE: Comment can't be replaced w/ just props.body. Look into this? */}
         <Comment
           body={props.body}
           commentClass={props.commentClass}
@@ -210,20 +205,14 @@ class App extends Component {
     //confirmation
     this.state.snoo.getSubreddit(subreddit).fetch()
     .then((result) => {
-      console.log("exists, nice");
-
       let stream = this.state.client.CommentStream({
         subreddit: subreddit,
-        results: 2,
+        results: 5,
         polltime: 1000,
       });
 
       this.setState({selectedSubreddit: result.url, currentStream: stream, subredditSelected: true});
-
     }).catch((error) => {
-      console.log("doesnt exist, ayylmao");
-
-      //TODO: config this and link to lower levels
       this.setState({acceptableSubreddit: false, loading: false});
     });
   }
@@ -232,7 +221,6 @@ class App extends Component {
     this.state.currentStream.emit("stop");
     //end snoostream
 
-    console.log("commentstream stopped");
     this.setState({subredditSelected: false,
                    selectedSubreddit: "",
                    loading: false,
