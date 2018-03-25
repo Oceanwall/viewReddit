@@ -33,13 +33,13 @@ input[type="text"]
 }
 .titleFont {
   font-family: 'PT Sans', sans-serif;
+  margin-left: 20px;
 }
 .loadingText {
   margin-top: 5vh;
-  text-align: center;
+  margin-left: 20px;
 
   font-family: 'PT Sans', sans-serif;
-  font-size: 10em;
 }
 /* Forward movement is thanks to https://github.com/IanLunn/Hover/blob/master/css/hover.css */
 .submit {
@@ -72,7 +72,7 @@ input[type="text"]
   transform: translateX(8px);
 }
 .back {
-  margin-left: 10px;
+  margin-left: 20px;
   margin-bottom: 20px;
 }
 #container {
@@ -226,9 +226,12 @@ input[type="text"]
   align-items: center;
 }
 .loading {
-  grid-area: 1 / 1 / 4 / 5;
+  grid-area: 2 / 1 / 4 / 5;
+
+  width: 100%;
 
   justify-self: center;
+  align-self: start;
 }
 .lower {
   /* Shorthand syntax: row-start, column-start, row-end, column-end */

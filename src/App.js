@@ -60,20 +60,7 @@ class Selector extends Component {
   }
 }
 
-function LoadingScreen(props) {
-  return (
-    <div>
-      <div className="bounce loadingText">
-        LOADING...
-      </div>
-      <button className="submit back ">
-        GO BACK
-      </button>
-    </div>
-  );
-}
-
-function Selected(props) {
+function BackButton(props) {
   return (
     <button onClick={props.back} className="submit back">
       GO BACK
@@ -153,7 +140,6 @@ class CommentView extends Component {
 
 // NOTE: Current focus; Make comments look pretty (make appearances and leaving better looking, randomize that)
 // randomize fonts? Centralize fonts (maybe adjust font sizes as necessary? dynamic?) we're almost done here.
-// Work on loading screen; add back button and fancy text?
 
 function CommentWrapper(props) {
   return (
@@ -263,24 +249,31 @@ class App extends Component {
     return (
       <div id="container">
         <div className="middle">
-          {(!this.state.subredditSelected && this.state.loading) && <Selector
+          {(!this.state.subredditSelected && !this.state.loading) && <Selector
             onSubmit={this.subredditHandle}
             acceptable={this.state.acceptableSubreddit}
             reset={this.resetSelector}
           />}
         </div>
-        <div className="middle loading">
-          {(!this.state.loading) && <LoadingScreen />}
+        <div className="loading">
+          {(this.state.loading) && <ReactFitText compressor={1}>
+            <div className="bounce loadingText">
+              LOADING...
+            </div>
+          </ReactFitText>}
+          {(this.state.loading) && <BackButton
+              back={this.switchSubreddit}
+            />}
         </div>
         <div className="top">
           {(this.state.subredditSelected && !this.state.loading) &&
-          <ReactFitText compressor={1}>
-            <div className="titleFont">
-              {this.state.selectedSubreddit}
-            </div>
-          </ReactFitText>}
+            <ReactFitText compressor={1}>
+              <div className="titleFont">
+                {this.state.selectedSubreddit}
+              </div>
+            </ReactFitText>}
           {(this.state.subredditSelected && !this.state.loading) &&
-            <Selected
+            <BackButton
               back={this.switchSubreddit}
             />}
         </div>
