@@ -62,12 +62,13 @@ class Selector extends Component {
 
 function LoadingScreen(props) {
   return (
-    <div className="spinner">
-      <div className="rect1" />
-      <div className="rect2" />
-      <div className="rect3" />
-      <div className="rect4" />
-      <div className="rect5" />
+    <div>
+      <div className="bounce loadingText">
+        LOADING...
+      </div>
+      <button className="submit back ">
+        GO BACK
+      </button>
     </div>
   );
 }
@@ -75,7 +76,7 @@ function LoadingScreen(props) {
 function Selected(props) {
   return (
     <button onClick={props.back} className="submit back">
-      Go back
+      GO BACK
     </button>
   );
 }
@@ -262,14 +263,14 @@ class App extends Component {
     return (
       <div id="container">
         <div className="middle">
-          {(!this.state.subredditSelected && !this.state.loading) && <Selector
+          {(!this.state.subredditSelected && this.state.loading) && <Selector
             onSubmit={this.subredditHandle}
             acceptable={this.state.acceptableSubreddit}
             reset={this.resetSelector}
           />}
         </div>
         <div className="middle loading">
-          {(this.state.loading) && <LoadingScreen />}
+          {(!this.state.loading) && <LoadingScreen />}
         </div>
         <div className="top">
           {(this.state.subredditSelected && !this.state.loading) &&
