@@ -88,6 +88,8 @@ class CommentView extends Component {
       comments: [],
       index: 0,
       filledOnce: false,
+      loading: props.loading,
+      onFirstComment: props.onFirstComment,
     }
     this.showComments();
   }
@@ -95,8 +97,12 @@ class CommentView extends Component {
   showComments() {
     this.state.stream.on("comment", (comment) => {
 
-      if (comment.body.length < 175) {
+      if (comment.body.length < 150) {
         let newCommentArray = this.state.comments.slice();
+
+        if (this.state.loading) {
+          this.state.onFirstComment();
+        }
 
         //let's have 3 random format numbers for now. might need more in the future
         let randomFormatNumbers = [];
@@ -117,7 +123,7 @@ class CommentView extends Component {
           newCommentArray[this.state.index] = null;
           this.setState({comments: newCommentArray});
         }
-        
+
         let newComment = <CommentWrapper
           location={divLocation}
           commentClass={commentClass}
@@ -146,11 +152,11 @@ class CommentView extends Component {
 
 // NOTE: Current focus; Make comments look pretty (make appearances and leaving better looking, randomize that)
 // randomize fonts? Centralize fonts (maybe adjust font sizes as necessary? dynamic?) we're almost done here.
-// don't use 100% height and width. that's uglyyyy
+// Work on loading screen; add back button and fancy text?
 
 function CommentWrapper(props) {
   return (
-    <div id={props.location} >
+    <div id={props.location}>
       <CSSTransitionGroup
         transitionName="transition1"
         transitionAppear={true}
@@ -200,7 +206,12 @@ class App extends Component {
     this.subredditHandle = this.handleSelectedSubreddit.bind(this);
     this.switchSubreddit = this.switchSubreddit.bind(this);
     this.resetSelector = this.resetSelector.bind(this);
+    this.onFirstComment = this.handleFirstComment.bind(this);
+  }
 
+  //ends loading screen, avoids forcing user to have to stare at empty screen for long time
+  handleFirstComment() {
+    this.setState({loading: false});
   }
 
   handleSelectedSubreddit(subreddit, event) {
@@ -220,7 +231,7 @@ class App extends Component {
         polltime: 1000,
       });
 
-      this.setState({selectedSubreddit: result.url, currentStream: stream, subredditSelected: true, loading: false});
+      this.setState({selectedSubreddit: result.url, currentStream: stream, subredditSelected: true});
 
     }).catch((error) => {
       console.log("doesnt exist, ayylmao");
@@ -237,6 +248,7 @@ class App extends Component {
     console.log("commentstream stopped");
     this.setState({subredditSelected: false,
                    selectedSubreddit: "",
+                   loading: false,
                  });
   }
 
@@ -250,29 +262,31 @@ class App extends Component {
     return (
       <div id="container">
         <div className="middle">
-          {!this.state.subredditSelected && <Selector
+          {(!this.state.subredditSelected && !this.state.loading) && <Selector
             onSubmit={this.subredditHandle}
             acceptable={this.state.acceptableSubreddit}
             reset={this.resetSelector}
           />}
         </div>
-        <div className="lower">
-          {this.state.loading && <LoadingScreen />}
+        <div className="middle loading">
+          {(this.state.loading) && <LoadingScreen />}
         </div>
         <div className="top">
-          {this.state.subredditSelected &&
+          {(this.state.subredditSelected && !this.state.loading) &&
           <ReactFitText compressor={1}>
             <div className="titleFont">
               {this.state.selectedSubreddit}
             </div>
           </ReactFitText>}
-          {this.state.subredditSelected &&
+          {(this.state.subredditSelected && !this.state.loading) &&
             <Selected
               back={this.switchSubreddit}
             />}
         </div>
-        {this.state.subredditSelected && <CommentView
+        {(this.state.subredditSelected) && <CommentView
           stream={this.state.currentStream}
+          loading={this.state.loading}
+          onFirstComment={this.onFirstComment}
         />}
       </div>
     );

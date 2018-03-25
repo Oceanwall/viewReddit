@@ -80,12 +80,15 @@ input[type="text"]
   height: 95%;
   width: 24.5vw;
 
-  font-size:calc(10px + .25vw);
+  font-size:calc(14px + .3vw);
+
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 
   vertical-align: center;
   text-align: center;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
+
+  /* margin: auto; */
 
   border: 1px solid black;
 }
@@ -116,7 +119,7 @@ input[type="text"]
 }
 .font2 {
   font-family: 'Rock Salt', cursive;
-  font-size:calc(8px + .2vw);
+  font-size:calc(10px + .2vw);
 }
 .font3 {
   font-family: 'Indie Flower', cursive;
@@ -214,6 +217,9 @@ input[type="text"]
   align-self: center;
 
   align-items: center;
+}
+.loading {
+  justify-self: center !important; 
 }
 .lower {
   /* Shorthand syntax: row-start, column-start, row-end, column-end */
