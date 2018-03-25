@@ -11,6 +11,8 @@
 
 <h4 align="center">A web application built on <a href="https://reactjs.org" target="_blank">React</a> that provides real-time, dynamic visualization of comments from various subreddits.
 
+<br>
+
 <p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#demos">Demos</a> •
@@ -86,6 +88,8 @@ This software has dependencies on / uses code from several open source packages 
 MIT
 
 ---
+
+**Last updated: 3/25/2018**
 
 > [(Outdated) Personal Website](http://www.cs.utexas.edu/~mzhao/) &nbsp;&middot;&nbsp;
 > GitHub [@oceanwall](https://github.com/oceanwall) &nbsp;&middot;&nbsp;
