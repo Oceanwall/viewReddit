@@ -2,7 +2,7 @@
 <h1 align="center">
   <br>
     <a href="">
-      <img src="" alt="ViewReddit" width="200">
+      <img src="https://raw.githubusercontent.com/Oceanwall/viewReddit/master/images/logo.png" alt="ViewReddit" width="200">
     </a>
   <br>
   ViewReddit
@@ -24,7 +24,7 @@
 * Simple user interface
 * Supports all public subreddits
 * Subreddit Error Handling
-  - Prevents invalid subreddits from being entered, and will indicate to user that an entered subreddit is invalid.
+  - Prevents invalid subreddits from being entered, and will indicate to user if an entered subreddit is invalid.
 * Does not require a Reddit account for use  
 * Interactive loading screen
   - Ensures that the user does not stare at a blank screen while comments are loading.
@@ -39,7 +39,8 @@
   
 ## Demos
 
-![screenshot]()
+![screenshot](https://raw.githubusercontent.com/Oceanwall/viewReddit/master/images/Loading.gif)
+![screenshot](https://raw.githubusercontent.com/Oceanwall/viewReddit/master/images/ShowComments.gif)
 
 ## How To Use
 
