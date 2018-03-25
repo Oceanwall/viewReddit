@@ -1,177 +1,15 @@
 //Necessary imports from node_modules
 import React, { Component } from 'react';
 import ReactFitText from 'react-fittext';
-import classNames from 'classnames';
-import { CSSTransitionGroup } from 'react-transition-group';
-import './App.css';
-require("dotenv").config();
 
+import Selector from './Selector.js'
+import BackButton from './BackButton.js';
+import CommentView from './CommentView.js';
+import './App.css';
+
+require("dotenv").config();
 const Snoowrap = require("snoowrap");
 const Snoostorm = require("snoostorm");
-
-//Handles the subreddit selection interface
-class Selector extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: '',
-      subredditCallback: props.onSubmit, //Store callback function in state
-      acceptable: props.acceptable,
-      reset: props.reset,
-    };
-
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  //Updates state when parent's acceptable state property changes
-  componentWillReceiveProps(nextProps) {
-    this.setState({acceptable: nextProps.acceptable});
-  }
-
-  //Active handling of text within the input box.
-  handleChange(event) {
-    this.setState({value: event.target.value});
-    this.state.reset();
-  }
-
-  //Renders the subreddit selection interface
-  render() {
-    return (
-      <div>
-        <div className="title">
-          SUBREDDIT VISUALIZER
-        </div>
-        {this.state.acceptable &&
-          <div className="subtitle">
-            an oceanwall endeavor
-          </div>
-        }
-        {!this.state.acceptable &&
-          <div className="subtitle invalidText">
-            Invalid Subreddit
-          </div>
-        }
-        <form id="submit" onSubmit={(event) => this.state.subredditCallback(this.state.value, event)}>
-          <input type="text" onChange={this.handleChange} className={!this.state.acceptable ? "invalidSubreddit" : undefined}/>
-          <br />
-          <button type="submit" disabled={!this.state.acceptable} className="submit">
-            SUBMIT
-          </button>
-        </form>
-      </div>
-    )
-  }
-}
-
-//Handles the "GO BACK" buttons for the loading screen and the Selected interfaces
-function BackButton(props) {
-  return (
-    <button onClick={props.back} className="submit back">
-      GO BACK
-    </button>
-  );
-}
-
-//Shows the comments once a snoostream connection has been made and comments have been obtained
-class CommentView extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      stream: props.stream,
-      comments: [],
-      index: 0,
-      filledOnce: false,
-      loading: props.loading,
-      onFirstComment: props.onFirstComment,
-    }
-    this.showComments(); //kicks off comment collection
-  }
-
-  //Takes in the stream's comments, audits them for length, and formats them before displaying them.
-  //Also controls when the loading screen ends
-  showComments() {
-    this.state.stream.on("comment", (comment) => {
-      //Comment length must be between 50 and 150 chararcters
-      if (comment.body.length < 150 && comment.body.length > 50) {
-        let newCommentArray = this.state.comments.slice();
-
-        //Ends loading screen
-        if (this.state.loading) {
-          this.state.onFirstComment();
-        }
-
-        //Random formatting for comments
-        let randomFormatNumber1 = Math.floor((Math.random() * 4) + 1);
-        let randomFormatNumber2 = Math.floor((Math.random() * 4) + 1);
-
-        let commentClass = classNames({
-          "classyAppearance": true,
-          [`color${randomFormatNumber1}`]: true,
-          [`font${randomFormatNumber2}`]: true,
-        });
-        let divLocation = `location${this.state.index}`;
-
-        //Removal of old comments allows for enter and leave transitions
-        if (this.state.filledOnce) {
-          newCommentArray[this.state.index] = null;
-          this.setState({comments: newCommentArray});
-        }
-
-        //Wrapper is necessary to hold both Comment and CSSTransitionGroup
-        let newComment = <CommentWrapper
-          location={divLocation}
-          commentClass={commentClass}
-          body={comment.body}
-          key={this.state.index}
-        />
-        newCommentArray[this.state.index] = newComment;
-
-        let newIndex = (this.state.index + 1) % 16;
-        if (newIndex === 0 && this.state.filledOnce === false) {
-          this.setState({filledOnce: true});
-        }
-        this.setState({comments: newCommentArray, index: newIndex});
-      }
-    });
-  }
-
-  //Renders the array of comments
-  render() {
-    return (
-      <div className="fill">
-        {this.state.comments}
-      </div>
-    )
-  }
-}
-
-//Wrapper class for CSSTransitionGroup and Comment
-function CommentWrapper(props) {
-  return (
-    <div id={props.location}>
-      <CSSTransitionGroup
-        transitionName="transition"
-        transitionAppear={true}
-        transitionAppearTimeout={500}
-        transitionEnterTimeout={500}
-        transitionLeaveTimeout={500} >
-        <Comment
-          body={props.body}
-          commentClass={props.commentClass}
-        />
-      </CSSTransitionGroup>
-    </div>
-  );
-}
-
-//Creates raw comment, with styling and content
-function Comment(props) {
-  return (
-    <div className={props.commentClass}>
-      {props.body}
-    </div>
-  );
-}
 
 //Main parent class; controls individual components
 class App extends Component {
@@ -219,7 +57,7 @@ class App extends Component {
       //If successful, create the CommentStream and prepare to provide comments
       let stream = this.state.client.CommentStream({
         subreddit: subreddit,
-        results: 5,
+        results: 6,
         polltime: 1000,
       });
       this.setState({selectedSubreddit: result.url, currentStream: stream, subredditSelected: true});
