@@ -12,10 +12,12 @@
 <h4 align="center">A web application built on <a href="https://reactjs.org" target="_blank">React</a> that provides real-time, dynamic visualization of comments from various subreddits.
 
 <br>
+<br>
 
 <p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#demos">Demos</a> •
+  <a href="#features-to-come">Features to Come</a> •
   <a href="#how-to-use">How To Use</a> •
   <a href="#credits">Credits</a> •
   <a href="#license">License</a>
@@ -27,7 +29,6 @@
 * Supports all public subreddits
 * Subreddit Error Handling
   - Prevents invalid subreddits from being entered, and will indicate to user if an entered subreddit is invalid.
-* Does not require a Reddit account for use  
 * Interactive loading screen
   - Ensures that the user does not stare at a blank screen while comments are loading.
 * Consistent comment updates
@@ -38,11 +39,18 @@
   - Works for multiple screen sizes
 * Works across multiple browsers
   - Google Chrome, Internet Explorer, and Firefox, among many others.
-  
+
 ## Demos
 
 ![screenshot](https://raw.githubusercontent.com/Oceanwall/viewReddit/master/images/Loading.gif)
 ![screenshot](https://raw.githubusercontent.com/Oceanwall/viewReddit/master/images/ShowComments.gif)
+
+## Features to Come
+
+* Subreddit word analysis
+  - Filters out common words and spam comments.
+* Downloadable Excel spreadsheets detailing said word frequencies
+* Viewable and downloadable graph-based visualization of said data
 
 ## How To Use
 
@@ -68,6 +76,16 @@ $ yarn start
 
 Note: If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
 
+You will also need a Reddit account, obtainable <a href="https://www.reddit.com/">here</a>, to create a .env file, which is (currently) needed for the app to work with Reddit's API. You will also need to go <a href="https://www.reddit.com/prefs/apps/">here</a> and click the "create another app" button, which will then provide you with an application id and secret.
+
+The .env file should go into the main folder of viewReddit and should be structured as follows:
+```
+REACT_APP_CLIENT_ID = randomnumbersandletters
+REACT_APP_CLIENT_SECRET = morerandomnumbersandletters
+REACT_APP_REDDIT_USER = Username
+REACT_APP_REDDIT_PASS = Password
+```
+
 ## Credits
 
 This software has dependencies on / uses code from several open source packages and projects.
@@ -90,6 +108,8 @@ MIT
 ---
 
 **Last updated: 3/25/2018**
+<br>
+A Work in Progress
 
 > [(Outdated) Personal Website](http://www.cs.utexas.edu/~mzhao/) &nbsp;&middot;&nbsp;
 > GitHub [@oceanwall](https://github.com/oceanwall) &nbsp;&middot;&nbsp;
