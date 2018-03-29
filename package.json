@@ -1,6 +1,6 @@
 {
-  "name": "redditapp",
-  "version": "0.1.0",
+  "name": "ViewReddit",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
@@ -17,5 +17,10 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-  }
+  },
+  "description": "Dynamic visualization of subreddits. Offers both visual depictions and data and graph based analyses.",
+  "main": "src/AppControl/index.js",
+  "repository": "https://github.com/Oceanwall/viewReddit.git",
+  "author": "Oceanwall <matthew853211@gmail.com>",
+  "license": "MIT"
 }

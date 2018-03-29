@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 import ReactFitText from 'react-fittext';
 
-import Selector from './Selector.js'
-import BackButton from './BackButton.js';
-import CommentView from './CommentView.js';
+import Selector from '../SelectorInterface/Selector.js'
+import BackButton from '../SelectorInterface/BackButton.js';
+import CommentView from '../CommentView/CommentView.js';
 import './App.css';
 
 require("dotenv").config();
