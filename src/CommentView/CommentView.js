@@ -13,6 +13,7 @@ class CommentView extends Component {
       filledOnce: false,
       loading: props.loading,
       onFirstComment: props.onFirstComment,
+      transferComment: props.transferComment,
     }
     this.showComments(); //kicks off comment collection
   }
@@ -21,8 +22,12 @@ class CommentView extends Component {
   //Also controls when the loading screen ends
   showComments() {
     this.state.stream.on("comment", (comment) => {
+
+      this.state.transferComment(comment);
+
       //Comment length must be between 50 and 150 chararcters
       if (comment.body.length < 150 && comment.body.length > 50) {
+        console.log("mellow world");
         let newCommentArray = this.state.comments.slice();
 
         //Ends loading screen

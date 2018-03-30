@@ -6,7 +6,7 @@ function processWord(targetWord) {
 
   let tempWord = targetWord.toLowerCase(); //begin by setting the word to lowercase
 
-  if (tempWord == "" || isCommon(tempWord) || isContraction(tempWord) || checkChar(tempWord)) { //if the word is either empty OR a common word OR a contraction, then do not process it
+  if (tempWord === "" || isCommon(tempWord) || isContraction(tempWord) || checkChar(tempWord)) { //if the word is either empty OR a common word OR a contraction, then do not process it
     return DO_NOT_PROCESS;
   }
 
@@ -25,3 +25,5 @@ function processWord(targetWord) {
   }
   else return tempWord;
 }
+
+export { processWord };

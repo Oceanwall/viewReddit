@@ -5,6 +5,7 @@ import ReactFitText from 'react-fittext';
 import Selector from '../SelectorInterface/Selector.js'
 import BackButton from '../SelectorInterface/BackButton.js';
 import CommentView from '../CommentView/CommentView.js';
+import CommentProcessor from '../WordAnalysis/CommentProcessor.js';
 import './App.css';
 
 require("dotenv").config();
@@ -33,12 +34,20 @@ class App extends Component {
       selectedSubreddit: "",
       acceptableSubreddit: true,
       loading: false,
+      wordMap: {},
+      wordsAnalyzed: 0,
+      currentComment: "",
     };
 
     this.subredditHandle = this.handleSelectedSubreddit.bind(this);
     this.switchSubreddit = this.switchSubreddit.bind(this);
     this.resetSelector = this.resetSelector.bind(this);
     this.onFirstComment = this.handleFirstComment.bind(this);
+    this.transferComment = this.transferComment.bind(this);
+  }
+
+  transferComment(comment) {
+    this.setState({currentComment: comment});
   }
 
   //Ends loading screen, ensures that user does not have to start at empty screen during loading process
@@ -109,23 +118,28 @@ class App extends Component {
             />}
         </div>
         {/* Selected Interface */}
-        <div className="top">
-          {(this.state.subredditSelected && !this.state.loading) &&
-            <ReactFitText compressor={1}>
-              <div className="titleFont">
-                {this.state.selectedSubreddit}
-              </div>
-            </ReactFitText>}
-          {(this.state.subredditSelected && !this.state.loading) &&
-            <BackButton
-              back={this.switchSubreddit}
-            />}
-        </div>
+        {(this.state.subredditSelected && !this.state.loading) &&
+          <div className="top">
+          <ReactFitText compressor={1}>
+            <div className="titleFont">
+              {this.state.selectedSubreddit}
+            </div>
+          </ReactFitText>
+          <BackButton
+            back={this.switchSubreddit}
+          />
+          <CommentProcessor
+            wordsAnalyzed={this.state.wordsAnalyzed}
+            // transferViews={this.state.transferViews}
+            currentComment={this.state.currentComment}
+          />
+        </div>}
         {/* CommentView interface */}
         {(this.state.subredditSelected) && <CommentView
           stream={this.state.currentStream}
           loading={this.state.loading}
           onFirstComment={this.onFirstComment}
+          transferComment={this.transferComment}
         />}
       </div>
     );
