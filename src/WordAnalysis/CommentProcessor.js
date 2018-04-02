@@ -1,4 +1,3 @@
-
 //words analyzed and storage map should be props passed down from app.js
 //this component handles tracking, etc; another component will handle display?
 //how do i shove live comments into this bad boy of a component?
@@ -10,15 +9,19 @@ import React, { Component } from 'react';
 import { processWord } from './WordProcessor.js';
 import { DO_NOT_PROCESS } from './WordAnalysisConstants.js';
 
+var storageMap;
+var wordsAnalyzed;
+
 class CommentProcessor extends Component {
   constructor(props) {
     super(props);
-    let storageMap = new Map();
     this.state = {
       currentComment: props.currentComment,
-      wordMap: storageMap,
-      wordsAnalyzed: props.wordsAnalyzed,
+      transferViews: props.transferViews,
     }
+
+    storageMap = new Map();
+    wordsAnalyzed = 0;
   }
 
 //NOTE: Current issue: Some weird synchronous problems are happening, where
@@ -31,8 +34,6 @@ class CommentProcessor extends Component {
   //   this.setState({currentComment: nextProps.currentComment});
   //   console.log("hello world");
   // }
-
-
 
   processComment(comment) {
     if (comment.author.name !== "AutoModerator") {
@@ -50,25 +51,42 @@ class CommentProcessor extends Component {
           // }
 
           if (cleanedWord !== DO_NOT_PROCESS) { //if the word isn't empty (i.e "")
-            this.setState({wordsAnalyzed: (this.state.wordsAnalyzed + 1)});
-            //not sure if this is the most efficient way of doing this, but we will see
-            let newWordMap = new Map(this.state.wordMap);
-            let result = newWordMap.get(cleanedWord);
 
-            if (result === undefined) { //if not already in map, add it to map
-              newWordMap.set(cleanedWord, 1);
-            }
-            else {
-              newWordMap.set(cleanedWord, result + 1);
-            }
+            wordsAnalyzed++;
+            let result = storageMap.get(cleanedWord);
 
-            this.setState({wordMap: newWordMap});
+            if (result === undefined) {
+              storageMap.set(cleanedWord, 1);
+            }
+            else storageMap.set(cleanedWord, result + 1);
+
+
+            // this.setState({wordsAnalyzed: (this.state.wordsAnalyzed + 1)});
+            //
+            // //not sure if this is the most efficient way of doing this, but we will see
+            // let newWordMap = new Map(this.state.wordMap);
+            // let result = newWordMap.get(cleanedWord);
+            //
+            // if (result === undefined) { //if not already in map, add it to map
+            //   newWordMap.set(cleanedWord, 1);
+            // }
+            // else {
+            //   newWordMap.set(cleanedWord, result + 1);
+            // }
+            //
+            // this.setState({wordMap: newWordMap});
           }
 
           comment.body = comment.body.substring(index + 1);
           index = comment.body.indexOf(" ");
         }
       }
+  }
+
+  prepareData() {
+    this.state.transferViews(storageMap, wordsAnalyzed);
+    //TODO: halt commentstream? clear button? this needs additional consideration
+    //also, can this function be merged with onClick. test later...
   }
 
   render() {

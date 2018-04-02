@@ -6,6 +6,8 @@ import Selector from '../SelectorInterface/Selector.js'
 import BackButton from '../SelectorInterface/BackButton.js';
 import CommentView from '../CommentView/CommentView.js';
 import CommentProcessor from '../WordAnalysis/CommentProcessor.js';
+import TableData from '../DataDisplays/TableData.js';
+import GraphData from '../DataDisplays/GraphData.js';
 import './App.css';
 
 require("dotenv").config();
@@ -37,6 +39,7 @@ class App extends Component {
       wordMap: {},
       wordsAnalyzed: 0,
       currentComment: "",
+      showingCommentData: false,
     };
 
     this.subredditHandle = this.handleSelectedSubreddit.bind(this);
@@ -44,6 +47,11 @@ class App extends Component {
     this.resetSelector = this.resetSelector.bind(this);
     this.onFirstComment = this.handleFirstComment.bind(this);
     this.transferComment = this.transferComment.bind(this);
+    this.transferViews = this.transferViews.bind(this);
+  }
+
+  transferViews(newMap, newWordsAnalyzed) {
+    this.setState({wordMap: newMap, wordsAnalyzed: newWordsAnalyzed, showingCommentData: true});
   }
 
   transferComment(comment) {
@@ -129,18 +137,26 @@ class App extends Component {
             back={this.switchSubreddit}
           />
           <CommentProcessor
-            wordsAnalyzed={this.state.wordsAnalyzed}
             // transferViews={this.state.transferViews}
             currentComment={this.state.currentComment}
           />
         </div>}
         {/* CommentView interface */}
-        {(this.state.subredditSelected) && <CommentView
-          stream={this.state.currentStream}
-          loading={this.state.loading}
-          onFirstComment={this.onFirstComment}
-          transferComment={this.transferComment}
-        />}
+        {(this.state.subredditSelected && !this.state.showingCommentData) &&
+          <CommentView
+            stream={this.state.currentStream}
+            loading={this.state.loading}
+            onFirstComment={this.onFirstComment}
+            transferComment={this.transferComment}
+          />
+        }
+        {(this.state.showingCommentData) &&
+          //give special id to this div soon
+          <div>
+            <TableData />
+            <GraphData />
+          </div>
+        }
       </div>
     );
   }
