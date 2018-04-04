@@ -23,7 +23,10 @@ class CommentView extends Component {
   showComments() {
     this.state.stream.on("comment", (comment) => {
 
-      this.state.transferComment(comment);
+      let shavedComment = {body: comment.body, author: comment.author.name}
+      this.state.transferComment(shavedComment);
+      // console.log("mellowpreworld");
+      // console.log(comment.body);
 
       //Comment length must be between 50 and 150 chararcters
       if (comment.body.length < 150 && comment.body.length > 50) {

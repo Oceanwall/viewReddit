@@ -19,8 +19,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     //creates snoowrap instance
+    //DONT do this with webapp; different authentication process for that
     const snoowrap = new Snoowrap({
-      userAgent: "commentVisualizer737362",
+      userAgent: "viewForReddit737362",
       clientId: process.env.REACT_APP_CLIENT_ID,
       clientSecret: process.env.REACT_APP_CLIENT_SECRET,
       username: process.env.REACT_APP_REDDIT_USER,
@@ -38,6 +39,7 @@ class App extends Component {
       loading: false,
       wordMap: {},
       wordsAnalyzed: 0,
+      commentsAnalyzed: 0,
       currentComment: "",
       showingCommentData: false,
     };
@@ -50,8 +52,9 @@ class App extends Component {
     this.transferViews = this.transferViews.bind(this);
   }
 
-  transferViews(newMap, newWordsAnalyzed) {
-    this.setState({wordMap: newMap, wordsAnalyzed: newWordsAnalyzed, showingCommentData: true});
+  transferViews(newMap, newWordsAnalyzed, commentsAnalyzed) {
+    //this should not commentprocessor to stop
+    this.setState({wordMap: newMap, wordsAnalyzed: newWordsAnalyzed, commentsAnalyzed: commentsAnalyzed, showingCommentData: true});
   }
 
   transferComment(comment) {
@@ -137,7 +140,7 @@ class App extends Component {
             back={this.switchSubreddit}
           />
           <CommentProcessor
-            // transferViews={this.state.transferViews}
+            transferViews={this.transferViews}
             currentComment={this.state.currentComment}
           />
         </div>}
@@ -152,8 +155,12 @@ class App extends Component {
         }
         {(this.state.showingCommentData) &&
           //give special id to this div soon
-          <div>
-            <TableData />
+          <div className="fill">
+            <TableData
+              wordMap={this.state.wordMap}
+              wordsAnalyzed={this.state.wordsAnalyzed}
+              commentsAnalyzed={this.state.commentsAnalyzed}
+             />
             <GraphData />
           </div>
         }

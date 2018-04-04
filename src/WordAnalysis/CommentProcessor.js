@@ -11,6 +11,7 @@ import { DO_NOT_PROCESS } from './WordAnalysisConstants.js';
 
 var storageMap;
 var wordsAnalyzed;
+var commentsAnalyzed;
 
 class CommentProcessor extends Component {
   constructor(props) {
@@ -19,25 +20,27 @@ class CommentProcessor extends Component {
       currentComment: props.currentComment,
       transferViews: props.transferViews,
     }
+    // console.log(this.state.transferViews);
 
     storageMap = new Map();
     wordsAnalyzed = 0;
+    commentsAnalyzed = 0;
+
+    this.prepareData = this.prepareData.bind(this);
   }
 
-//NOTE: Current issue: Some weird synchronous problems are happening, where
-// the code is being stuck on processComment() rather than asynchronously letting
-// it happen. Also, I'm not altogether confident that updating state every
-// single time is a good idea.
-  // componentWillReceiveProps(nextProps) {
-  //   //There is no need to save the current comment?
-  //   this.processComment(nextProps.currentComment);
-  //   this.setState({currentComment: nextProps.currentComment});
-  //   console.log("hello world");
-  // }
+//TODO: Fix back buttons (make conditional based on what's active?),
+//prepare table and graph appearances, stop updating commentview when unmounted? some error is happening
+
+  componentWillReceiveProps(nextProps) {
+    //There is no need to save the current comment?
+    this.processComment(nextProps.currentComment);
+  }
 
   processComment(comment) {
-    if (comment.author.name !== "AutoModerator") {
-        // commentsAnalyzed++;
+    //should be comment.author.name, but im using shavedComment
+    if (comment.author !== "AutoModerator") {
+        commentsAnalyzed++;
         let index = comment.body.indexOf(" "); //spaces are used to differentiate between words
 
         while (index !== -1) {
@@ -58,23 +61,10 @@ class CommentProcessor extends Component {
             if (result === undefined) {
               storageMap.set(cleanedWord, 1);
             }
-            else storageMap.set(cleanedWord, result + 1);
+            else {
+              storageMap.set(cleanedWord, result + 1);
+            }
 
-
-            // this.setState({wordsAnalyzed: (this.state.wordsAnalyzed + 1)});
-            //
-            // //not sure if this is the most efficient way of doing this, but we will see
-            // let newWordMap = new Map(this.state.wordMap);
-            // let result = newWordMap.get(cleanedWord);
-            //
-            // if (result === undefined) { //if not already in map, add it to map
-            //   newWordMap.set(cleanedWord, 1);
-            // }
-            // else {
-            //   newWordMap.set(cleanedWord, result + 1);
-            // }
-            //
-            // this.setState({wordMap: newWordMap});
           }
 
           comment.body = comment.body.substring(index + 1);
@@ -84,7 +74,7 @@ class CommentProcessor extends Component {
   }
 
   prepareData() {
-    this.state.transferViews(storageMap, wordsAnalyzed);
+    this.state.transferViews(storageMap, wordsAnalyzed, commentsAnalyzed);
     //TODO: halt commentstream? clear button? this needs additional consideration
     //also, can this function be merged with onClick. test later...
   }
