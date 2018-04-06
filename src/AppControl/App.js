@@ -41,6 +41,7 @@ class App extends Component {
       wordsAnalyzed: 0,
       commentsAnalyzed: 0,
       currentComment: "",
+      hideStreamOrder: false,
       showingCommentData: false,
     };
 
@@ -50,11 +51,26 @@ class App extends Component {
     this.onFirstComment = this.handleFirstComment.bind(this);
     this.transferComment = this.transferComment.bind(this);
     this.transferViews = this.transferViews.bind(this);
+    this.unmountedTransferViews = this.unmountedTransferViews.bind(this);
+    this.switchViews = this.switchViews.bind(this);
+  }
+
+  switchViews() {
+    //this should cause the commmentstream to restart WITHOUT resetting the data
+    //because commentstream was closed, must create new one =_____=
+    // this.state.currentStream.start();
+    // this.setState({showingCommentData: false});
+  }
+
+  unmountedTransferViews() {
+    this.setState({showingCommentData: true});
+    console.log("it worked!");
   }
 
   transferViews(newMap, newWordsAnalyzed, commentsAnalyzed) {
-    //this should not commentprocessor to stop
-    this.setState({wordMap: newMap, wordsAnalyzed: newWordsAnalyzed, commentsAnalyzed: commentsAnalyzed, showingCommentData: true});
+    //this should NOT cause the commmentstream to stop
+    this.setState({wordMap: newMap, wordsAnalyzed: newWordsAnalyzed, commentsAnalyzed: commentsAnalyzed, hideStreamOrder: true});
+    // this.state.currentStream.emit("stop");
   }
 
   transferComment(comment) {
@@ -136,9 +152,14 @@ class App extends Component {
               {this.state.selectedSubreddit}
             </div>
           </ReactFitText>
+          {!this.state.showingCommentData &&
           <BackButton
             back={this.switchSubreddit}
-          />
+          />}
+          {this.state.showingCommentData &&
+          <BackButton
+            back={this.switchViews}
+          />}
           <CommentProcessor
             transferViews={this.transferViews}
             currentComment={this.state.currentComment}
@@ -151,6 +172,8 @@ class App extends Component {
             loading={this.state.loading}
             onFirstComment={this.onFirstComment}
             transferComment={this.transferComment}
+            hideStreamOrder={this.state.hideStreamOrder}
+            activateUnmount={this.unmountedTransferViews}
           />
         }
         {(this.state.showingCommentData) &&

@@ -29,8 +29,9 @@ class CommentProcessor extends Component {
     this.prepareData = this.prepareData.bind(this);
   }
 
-//TODO: Fix back buttons (make conditional based on what's active?),
-//prepare table and graph appearances, stop updating commentview when unmounted? some error is happening
+//TODO: Fix back buttons (make conditional based on what's active?), reset data collection (two buttons to do it?)
+//TODO: then, make the switch between interfaces and stuff (maybe loading screen for seedata? think)
+//prepare table and graph appearances
 
   componentWillReceiveProps(nextProps) {
     //There is no need to save the current comment?
@@ -75,7 +76,6 @@ class CommentProcessor extends Component {
 
   prepareData() {
     this.state.transferViews(storageMap, wordsAnalyzed, commentsAnalyzed);
-    //TODO: halt commentstream? clear button? this needs additional consideration
     //also, can this function be merged with onClick. test later...
   }
 
