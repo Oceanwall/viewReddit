@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import ReactFitText from 'react-fittext';
 
 import Selector from '../SelectorInterface/Selector.js'
-import BackButton from '../SelectorInterface/BackButton.js';
+import WorkerButton from './WorkerButton.js';
 import CommentView from '../CommentView/CommentView.js';
 import CommentProcessor from '../WordAnalysis/CommentProcessor.js';
 import TableData from '../DataDisplays/TableData.js';
@@ -136,8 +136,9 @@ class App extends Component {
               LOADING...
             </div>
           </ReactFitText>}
-          {(this.state.loading) && <BackButton
-              back={this.switchSubreddit}
+          {(this.state.loading) && <WorkerButton
+              className="submit back"
+              click={this.switchSubreddit}
               text="GO BACK"
             />}
         </div>
@@ -150,13 +151,15 @@ class App extends Component {
             </div>
           </ReactFitText>
           {!this.state.showCommentData &&
-          <BackButton
-            back={this.switchSubreddit}
+          <WorkerButton
+            className="submit back"
+            click={this.switchSubreddit}
             text="GO BACK"
           />}
           {this.state.showCommentData &&
-          <BackButton
-            back={this.switchViews}
+          <WorkerButton
+            className="submit back"
+            click={this.switchViews}
             text="GO BACK"
           />}
           <CommentProcessor

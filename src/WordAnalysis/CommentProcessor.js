@@ -7,7 +7,7 @@
 //Do I hide this behind a button?
 import React, { Component } from 'react';
 import { processWord } from './WordProcessor.js';
-import BackButton from '../SelectorInterface/BackButton.js';
+import WorkerButton from '../AppControl/WorkerButton.js';
 import { DO_NOT_PROCESS } from './WordAnalysisConstants.js';
 
 var storageMap;
@@ -21,8 +21,8 @@ class CommentProcessor extends Component {
       currentComment: props.currentComment,
       transferViews: props.transferViews,
       resetData: props.resetData,
-      dataButtonClass: "",
-      resetDataClass: "",
+      dataButtonClass: "submit back",
+      resetDataClass: "submit back",
       showCommentData: props.showCommentData,
     }
     // console.log(this.state.transferViews);
@@ -35,8 +35,8 @@ class CommentProcessor extends Component {
     this.resetData = this.resetData.bind(this);
   }
 
-//TODO: reset data collection (give user feedback to indicate that data has been reset?)
-//TODO: overhaul button; it's no longer just a "backbutton" but should be a neutral button template
+//TODO: reset data collection (give user feedback to indicate that data has been reset?) (maybe integrate jquery to avoid using setTimeout? idk this is an annoying problem but also really minor)
+//addendum to above: change the css when clicked to make it look cooler. right now it looks really ugly
 //TODO: transitions between buttons; give it a more natural feel
 //TODO: prepare table and graph appearances
 
@@ -45,7 +45,7 @@ class CommentProcessor extends Component {
     this.processComment(nextProps.currentComment);
     this.setState({showCommentData: nextProps.showCommentData});
     if (nextProps.showCommentData === false && this.state.showCommentData === true) {
-      this.setState({dataButtonClass: ""});
+      this.setState({dataButtonClass: "submit back"});
     }
   }
 
@@ -88,15 +88,23 @@ class CommentProcessor extends Component {
   prepareData() {
     this.state.transferViews(storageMap, wordsAnalyzed, commentsAnalyzed);
     //also, can this function be merged with onClick. test later...
-    this.setState({dataButtonClass: "disappear"});
+    this.setState({dataButtonClass: "submit back disappear"});
   }
 
   resetData() {
-    this.setState({resetDataClass: "greenlight"});
+    this.setState({resetDataClass: "submit back resetFeedback"});
     storageMap = new Map();
     wordsAnalyzed = 0;
     commentsAnalyzed = 0;
     this.state.resetData(storageMap, wordsAnalyzed, commentsAnalyzed);
+    this.memeDream();
+  }
+
+  memeDream() {
+    setTimeout(() => {
+      this.setState({resetDataClass: "submit back"});
+    }, 500);
+    console.log("im getting here");
   }
 
   render() {
@@ -104,18 +112,16 @@ class CommentProcessor extends Component {
     //also, im being slightly lazy here by using span className to hide the button when pressed :)
     return(
       <span>
-        <span className={this.state.dataButtonClass}>
-          <BackButton
-            back={this.prepareData}
-            text="SEE DATA"
-          />
-        </span>
-        <span className={this.state.resetDataClass}>
-          <BackButton
-            back={this.resetData}
-            text="RESET DATA"
-          />
-        </span>
+        <WorkerButton
+          className={this.state.dataButtonClass}
+          click={this.prepareData}
+          text="SEE DATA"
+        />
+        <WorkerButton
+          className={this.state.resetDataClass}
+          click={this.resetData}
+          text="RESET DATA"
+        />
       </span>
     );
   }

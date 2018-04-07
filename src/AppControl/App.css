@@ -326,10 +326,14 @@ input[type="text"]
   display: none;
 }
 .resetFeedback {
-  animation-duration: 1.5s;
+  animation-duration: 0.5s;
   animation-name: greenlight;
 }
 @keyframes greenlight {
-  10% {border: 5px solid green; }
-  90% {border: 1px groove black; }
+  from {
+    border: 5px solid green;
+  }
+  to {
+    border: 1px groove black;
+  }
 }
