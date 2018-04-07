@@ -14,7 +14,7 @@ class CommentView extends Component {
       loading: props.loading,
       onFirstComment: props.onFirstComment,
       transferComment: props.transferComment,
-      hideStreamOrder: props.hideStreamOrder,
+      hideStreamOrder: false,
       activateUnmount: props.activateUnmount
     }
     this.showComments(); //kicks off comment collection

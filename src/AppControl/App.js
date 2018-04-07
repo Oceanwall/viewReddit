@@ -60,11 +60,12 @@ class App extends Component {
     //because commentstream was closed, must create new one =_____=
     // this.state.currentStream.start();
     // this.setState({showingCommentData: false});
+    this.setState({hideStreamOrder: false, showingCommentData: false});
+    // this.setState({showingCommentData: false});
   }
 
   unmountedTransferViews() {
     this.setState({showingCommentData: true});
-    console.log("it worked!");
   }
 
   transferViews(newMap, newWordsAnalyzed, commentsAnalyzed) {
