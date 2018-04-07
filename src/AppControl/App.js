@@ -41,8 +41,7 @@ class App extends Component {
       wordsAnalyzed: 0,
       commentsAnalyzed: 0,
       currentComment: "",
-      hideStreamOrder: false,
-      showingCommentData: false,
+      showCommentData: false,
     };
 
     this.subredditHandle = this.handleSelectedSubreddit.bind(this);
@@ -51,27 +50,17 @@ class App extends Component {
     this.onFirstComment = this.handleFirstComment.bind(this);
     this.transferComment = this.transferComment.bind(this);
     this.transferViews = this.transferViews.bind(this);
-    this.unmountedTransferViews = this.unmountedTransferViews.bind(this);
     this.switchViews = this.switchViews.bind(this);
   }
 
   switchViews() {
-    //this should cause the commmentstream to restart WITHOUT resetting the data
-    //because commentstream was closed, must create new one =_____=
-    // this.state.currentStream.start();
-    // this.setState({showingCommentData: false});
-    this.setState({hideStreamOrder: false, showingCommentData: false});
-    // this.setState({showingCommentData: false});
+    this.setState({showCommentData: false});
   }
 
-  unmountedTransferViews() {
-    this.setState({showingCommentData: true});
-  }
-
+  //commentview does not stop while this is happening, but css allows for easy "apparent" view changes
   transferViews(newMap, newWordsAnalyzed, commentsAnalyzed) {
     //this should NOT cause the commmentstream to stop
-    this.setState({wordMap: newMap, wordsAnalyzed: newWordsAnalyzed, commentsAnalyzed: commentsAnalyzed, hideStreamOrder: true});
-    // this.state.currentStream.emit("stop");
+    this.setState({wordMap: newMap, wordsAnalyzed: newWordsAnalyzed, commentsAnalyzed: commentsAnalyzed, showCommentData: true});
   }
 
   transferComment(comment) {
@@ -153,11 +142,11 @@ class App extends Component {
               {this.state.selectedSubreddit}
             </div>
           </ReactFitText>
-          {!this.state.showingCommentData &&
+          {!this.state.showCommentData &&
           <BackButton
             back={this.switchSubreddit}
           />}
-          {this.state.showingCommentData &&
+          {this.state.showCommentData &&
           <BackButton
             back={this.switchViews}
           />}
@@ -167,17 +156,16 @@ class App extends Component {
           />
         </div>}
         {/* CommentView interface */}
-        {(this.state.subredditSelected && !this.state.showingCommentData) &&
+        {(this.state.subredditSelected) &&
           <CommentView
             stream={this.state.currentStream}
             loading={this.state.loading}
             onFirstComment={this.onFirstComment}
             transferComment={this.transferComment}
-            hideStreamOrder={this.state.hideStreamOrder}
-            activateUnmount={this.unmountedTransferViews}
+            showCommentData={this.state.showCommentData}
           />
         }
-        {(this.state.showingCommentData) &&
+        {(this.state.showCommentData) &&
           //give special id to this div soon
           <div className="fill">
             <TableData

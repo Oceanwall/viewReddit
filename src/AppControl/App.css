@@ -319,3 +319,6 @@ input[type="text"]
   animation-duration: 2s;
   animation-iteration-count: infinite;
 }
+.hide {
+  visibility: hidden;
+}

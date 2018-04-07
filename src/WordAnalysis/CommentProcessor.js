@@ -29,8 +29,8 @@ class CommentProcessor extends Component {
     this.prepareData = this.prepareData.bind(this);
   }
 
-//TODO: Fix back buttons (make conditional based on what's active?), reset data collection (two buttons to do it?)
-//TODO: then, make the switch between interfaces and stuff (maybe loading screen for seedata? think)
+//TODO: reset data collection (two buttons to do it?)
+//TODO: then, make the switch between interfaces and stuff
 //prepare table and graph appearances
 
   componentWillReceiveProps(nextProps) {
