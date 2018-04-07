@@ -51,6 +51,12 @@ class App extends Component {
     this.transferComment = this.transferComment.bind(this);
     this.transferViews = this.transferViews.bind(this);
     this.switchViews = this.switchViews.bind(this);
+    this.resetData = this.resetData.bind(this);
+  }
+
+  //hypothetically, i could blend all three of these functions into one utility function BUT that would be messy so why would I?
+  resetData(newMap, newWordsAnalyzed, commentsAnalyzed) {
+    this.setState({wordMap: newMap, wordsAnalyzed: newWordsAnalyzed, commentsAnalyzed: commentsAnalyzed});
   }
 
   switchViews() {
@@ -155,7 +161,9 @@ class App extends Component {
           />}
           <CommentProcessor
             transferViews={this.transferViews}
+            resetData={this.resetData}
             currentComment={this.state.currentComment}
+            showCommentData={this.state.showCommentData}
           />
         </div>}
         {/* CommentView interface */}

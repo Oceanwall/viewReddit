@@ -20,6 +20,10 @@ class CommentProcessor extends Component {
     this.state = {
       currentComment: props.currentComment,
       transferViews: props.transferViews,
+      resetData: props.resetData,
+      dataButtonClass: "",
+      resetDataClass: "",
+      showCommentData: props.showCommentData,
     }
     // console.log(this.state.transferViews);
 
@@ -28,14 +32,21 @@ class CommentProcessor extends Component {
     commentsAnalyzed = 0;
 
     this.prepareData = this.prepareData.bind(this);
+    this.resetData = this.resetData.bind(this);
   }
 
 //TODO: reset data collection (give user feedback to indicate that data has been reset?)
+//TODO: overhaul button; it's no longer just a "backbutton" but should be a neutral button template
+//TODO: transitions between buttons; give it a more natural feel
 //TODO: prepare table and graph appearances
 
   componentWillReceiveProps(nextProps) {
     //There is no need to save the current comment?
     this.processComment(nextProps.currentComment);
+    this.setState({showCommentData: nextProps.showCommentData});
+    if (nextProps.showCommentData === false && this.state.showCommentData === true) {
+      this.setState({dataButtonClass: ""});
+    }
   }
 
   processComment(comment) {
@@ -77,20 +88,34 @@ class CommentProcessor extends Component {
   prepareData() {
     this.state.transferViews(storageMap, wordsAnalyzed, commentsAnalyzed);
     //also, can this function be merged with onClick. test later...
+    this.setState({dataButtonClass: "disappear"});
+  }
+
+  resetData() {
+    this.setState({resetDataClass: "greenlight"});
+    storageMap = new Map();
+    wordsAnalyzed = 0;
+    commentsAnalyzed = 0;
+    this.state.resetData(storageMap, wordsAnalyzed, commentsAnalyzed);
   }
 
   render() {
     //use of span here is really helpful; preserves the in-lineness of the buttons
+    //also, im being slightly lazy here by using span className to hide the button when pressed :)
     return(
       <span>
-        <BackButton
-          back={this.prepareData}
-          text="SEE DATA"
-        />
-        <BackButton
-          back={this.prepareData}
-          text="RESET DATA"
-        />
+        <span className={this.state.dataButtonClass}>
+          <BackButton
+            back={this.prepareData}
+            text="SEE DATA"
+          />
+        </span>
+        <span className={this.state.resetDataClass}>
+          <BackButton
+            back={this.resetData}
+            text="RESET DATA"
+          />
+        </span>
       </span>
     );
   }

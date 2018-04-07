@@ -10,6 +10,14 @@ class TableData extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      wordMap: nextProps.wordMap,
+      wordsAnalyzed: nextProps.wordsAnalyzed,
+      commentsAnalyzed: nextProps.commentsAnalyzed,
+    });
+  }
+
   render() {
     return (
       <div>
