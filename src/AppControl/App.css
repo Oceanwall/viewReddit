@@ -42,7 +42,7 @@ input[type="text"]
 /* Forward movement is thanks to https://github.com/IanLunn/Hover/blob/master/css/hover.css */
 .submit {
   height: 40px;
-  width: 30%;
+  width: 25%;
   margin-top: 15px;
 
   border: 1px groove black;

@@ -132,6 +132,7 @@ class App extends Component {
           </ReactFitText>}
           {(this.state.loading) && <BackButton
               back={this.switchSubreddit}
+              text="GO BACK"
             />}
         </div>
         {/* Selected Interface */}
@@ -145,10 +146,12 @@ class App extends Component {
           {!this.state.showCommentData &&
           <BackButton
             back={this.switchSubreddit}
+            text="GO BACK"
           />}
           {this.state.showCommentData &&
           <BackButton
             back={this.switchViews}
+            text="GO BACK"
           />}
           <CommentProcessor
             transferViews={this.transferViews}

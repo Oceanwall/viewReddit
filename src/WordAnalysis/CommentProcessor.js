@@ -7,6 +7,7 @@
 //Do I hide this behind a button?
 import React, { Component } from 'react';
 import { processWord } from './WordProcessor.js';
+import BackButton from '../SelectorInterface/BackButton.js';
 import { DO_NOT_PROCESS } from './WordAnalysisConstants.js';
 
 var storageMap;
@@ -29,9 +30,8 @@ class CommentProcessor extends Component {
     this.prepareData = this.prepareData.bind(this);
   }
 
-//TODO: reset data collection (two buttons to do it?)
-//TODO: then, make the switch between interfaces and stuff
-//prepare table and graph appearances
+//TODO: reset data collection (give user feedback to indicate that data has been reset?)
+//TODO: prepare table and graph appearances
 
   componentWillReceiveProps(nextProps) {
     //There is no need to save the current comment?
@@ -80,10 +80,18 @@ class CommentProcessor extends Component {
   }
 
   render() {
+    //use of span here is really helpful; preserves the in-lineness of the buttons
     return(
-      <button onClick={this.prepareData} className="submit back">
-        SEE DATA
-      </button>
+      <span>
+        <BackButton
+          back={this.prepareData}
+          text="SEE DATA"
+        />
+        <BackButton
+          back={this.prepareData}
+          text="RESET DATA"
+        />
+      </span>
     );
   }
 }

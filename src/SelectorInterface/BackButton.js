@@ -4,7 +4,7 @@ import React from 'react';
 function BackButton(props) {
   return (
     <button onClick={props.back} className="submit back">
-      GO BACK
+      {props.text}
     </button>
   );
 }
