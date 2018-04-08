@@ -23,7 +23,7 @@ class CommentView extends Component {
   componentWillReceiveProps(nextProps) {
     this.setState({showCommentData: nextProps.showCommentData});
     if (nextProps.showCommentData === true && this.state.showCommentData === false) {
-      let hiddenClass = "fill hide";
+      let hiddenClass = "fill disappear";
       this.setState({currentClass: hiddenClass});
     }
     else if (nextProps.showCommentData === false && this.state.showCommentData === true) {

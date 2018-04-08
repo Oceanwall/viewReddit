@@ -180,9 +180,9 @@ class App extends Component {
           />
         }
         {(this.state.showCommentData) &&
-          //give special id to this div soon
           <div className="fill">
             <TableData
+              showCommentData={this.state.showCommentData}
               wordMap={this.state.wordMap}
               wordsAnalyzed={this.state.wordsAnalyzed}
               commentsAnalyzed={this.state.commentsAnalyzed}

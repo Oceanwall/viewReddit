@@ -45,7 +45,8 @@ input[type="text"]
   width: 25%;
   margin-top: 15px;
 
-  border: 1px groove black;
+  border: 2px outset white;
+  /*border: 1px solid black; */
   border-radius: 3px;
 
   font-family: 'Ubuntu', sans-serif;
@@ -210,6 +211,12 @@ input[type="text"]
     "location14 location3 location15 location5"
     "location2 location12 location8 location11"
     "location7 location0 location9 location4";
+}
+.leftSide {
+  grid-area: 1 / 0 / 4 / 2;
+}
+.rightSide {
+  grid-area: 1 / 2 / 4 / 4;
 }
 .middle {
   grid-area: 2 / 2 / 4 / 4;
