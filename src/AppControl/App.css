@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=PT+Sans:700|Lora:400i|Oswald:300,400|Ubuntu:400,700|Source+Sans+Pro:900|Waiting+for+the+Sunrise|Rock+Salt|Indie+Flower|Shadows+Into+Light');
+@import url('https://fonts.googleapis.com/css?family=PT+Sans:700|Lora:400i|Oswald:300,400|Ubuntu:400,700|Source+Sans+Pro:900|Waiting+for+the+Sunrise|Rock+Salt|Indie+Flower|Shadows+Into+Light|Montserrat:400,500');
 
 input {
   border: 1px dotted #999;
@@ -343,4 +343,39 @@ input[type="text"]
   to {
     border: 1px groove black;
   }
+}
+.dataBody {
+  display: block;
+  overflow: scroll;
+  height: 60vh;
+  width: 50vw;
+}
+.leftSide {
+  grid-area: 1 / 0 / 4 / 2;
+}
+.word {
+  word-wrap: break-word;
+  width: 25vw;
+  max-width: 25vw;
+}
+.freq {
+  word-wrap: break-word;
+  width: 10vw;
+  max-width: 10vw;
+}
+.relFreq {
+  word-wrap: break-word;
+  width: 15vw;
+  max-width: 15vw;
+}
+td, th {
+  text-align: left;
+}
+th {
+  font-family: 'PT Sans', sans-serif;
+  font-size: 3vh; /* NOTE: Maybe make this dynamic? hmmmmm */
+}
+td {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 2.5vh;
 }

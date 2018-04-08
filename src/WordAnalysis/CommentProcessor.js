@@ -39,6 +39,7 @@ class CommentProcessor extends Component {
 //addendum to above: change the css when clicked to make it look cooler. right now it looks really ugly
 //TODO: transitions between buttons; give it a more natural feel
 //TODO: prepare table and graph appearances
+//TODO:make table look nice, make seedata unclickable until a certain number of words have been processed, limit number of words shown on screen? maybe limit to top 500?
 
   componentWillReceiveProps(nextProps) {
     //There is no need to save the current comment?
@@ -57,13 +58,6 @@ class CommentProcessor extends Component {
 
         while (index !== -1) {
           let cleanedWord = processWord(comment.body.substring(0, index).toLowerCase()); //processWord normalizes the word and knocks off any extraneous stuff (recursive function)
-
-          // //this loop should ensure that the word is fully processed before continuing
-          // //probably not necessary after i turned processWord into a recursive function, but we shall see
-          // while (cleanedWord != preProcessedWord && cleanedWord != DO_NOT_PROCESS) {
-          //   preProcessedWord = cleanedWord;
-          //   cleanedWord = processWord(preProcessedWord);
-          // }
 
           if (cleanedWord !== DO_NOT_PROCESS) { //if the word isn't empty (i.e "")
 
