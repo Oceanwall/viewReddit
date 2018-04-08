@@ -346,7 +346,8 @@ input[type="text"]
 }
 .dataBody {
   display: block;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
   height: 60vh;
   width: 50vw;
 }
@@ -355,13 +356,13 @@ input[type="text"]
 }
 .word {
   word-wrap: break-word;
-  width: 25vw;
+  width: 20vw;
   max-width: 25vw;
 }
 .freq {
   word-wrap: break-word;
-  width: 10vw;
-  max-width: 10vw;
+  width: 15vw;
+  max-width: 15vw;
 }
 .relFreq {
   word-wrap: break-word;
@@ -378,4 +379,20 @@ th {
 td {
   font-family: 'Montserrat', sans-serif;
   font-size: 2.5vh;
+}
+/* HOLY MOLY you can CSS scrollbars :) */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #e1e4ea;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background: #a9aaad;
+  height: 5vh;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #081233;
 }
