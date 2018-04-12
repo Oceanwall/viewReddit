@@ -37,7 +37,9 @@ class TableData extends Component {
   prepareTable(wordMapArray) {
     let tableElementArray = [];
 
-    for (let i = 0; i < wordMapArray.length; i++) {
+    let tableLength = wordMapArray.length > 500 ? 500 : wordMapArray.length;
+
+    for (let i = 0; i < tableLength; i++) {
       let element = wordMapArray[i];
       tableElementArray[i] = <TableElement
         word={element.word}
@@ -52,12 +54,12 @@ class TableData extends Component {
   render() {
     return (
       <table className="leftSide dataBody">
-        <tr>
-          <th className="word">Word</th>
-          <th className="freq">Frequency</th>
-          <th className="relFreq">Relative Frequency</th>
-        </tr>
         <tbody>
+          <tr>
+            <th className="word">Word</th>
+            <th className="freq">Frequency</th>
+            <th className="relFreq">Relative Frequency</th>
+          </tr>
           {this.state.table}
         </tbody>
       </table>

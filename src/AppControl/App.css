@@ -70,6 +70,9 @@ input[type="text"]
   -webkit-transform: translateX(8px);
   transform: translateX(8px);
 }
+.submit:hover:disabled {
+  cursor: not-allowed;
+}
 .back {
   margin-left: 20px;
   margin-bottom: 20px;

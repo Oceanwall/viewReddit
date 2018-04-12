@@ -24,6 +24,7 @@ class CommentProcessor extends Component {
       dataButtonClass: "submit back",
       resetDataClass: "submit back",
       showCommentData: props.showCommentData,
+      hide: true,
     }
     // console.log(this.state.transferViews);
 
@@ -36,10 +37,11 @@ class CommentProcessor extends Component {
   }
 
 //TODO: reset data collection (give user feedback to indicate that data has been reset?) (maybe integrate jquery to avoid using setTimeout? idk this is an annoying problem but also really minor)
+//TODO: reset data: opaque rectangle saying (Reset success) and then auto renavigate to front page (with locked seemore button again? <- already taken care of)
 //addendum to above: change the css when clicked to make it look cooler. right now it looks really ugly
 //TODO: transitions between buttons; give it a more natural feel
 //TODO: prepare table and graph appearances
-//TODO:make table look nice, make seedata unclickable until a certain number of words have been processed, limit number of words shown on screen? maybe limit to top 500?
+//TODO:make table look nice(r?) low priority
 
   componentWillReceiveProps(nextProps) {
     //There is no need to save the current comment?
@@ -47,6 +49,11 @@ class CommentProcessor extends Component {
     this.setState({showCommentData: nextProps.showCommentData});
     if (nextProps.showCommentData === false && this.state.showCommentData === true) {
       this.setState({dataButtonClass: "submit back"});
+    }
+    if (wordsAnalyzed > 50) {
+      this.setState({hide: false});
+    } else {
+      this.setState({hide: true});
     }
   }
 
@@ -91,14 +98,13 @@ class CommentProcessor extends Component {
     wordsAnalyzed = 0;
     commentsAnalyzed = 0;
     this.state.resetData(storageMap, wordsAnalyzed, commentsAnalyzed);
-    this.memeDream();
+    this.badlySetCSS();
   }
 
-  memeDream() {
+  badlySetCSS() {
     setTimeout(() => {
       this.setState({resetDataClass: "submit back"});
     }, 500);
-    console.log("im getting here");
   }
 
   render() {
@@ -109,6 +115,7 @@ class CommentProcessor extends Component {
         <WorkerButton
           className={this.state.dataButtonClass}
           click={this.prepareData}
+          hide={this.state.hide}
           text="SEE DATA"
         />
         <WorkerButton
