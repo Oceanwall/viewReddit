@@ -42,6 +42,7 @@ class App extends Component {
       commentsAnalyzed: 0,
       currentComment: "",
       showCommentData: false,
+      top500Words: [],
     };
 
     this.subredditHandle = this.handleSelectedSubreddit.bind(this);
@@ -52,6 +53,13 @@ class App extends Component {
     this.transferViews = this.transferViews.bind(this);
     this.switchViews = this.switchViews.bind(this);
     this.resetData = this.resetData.bind(this);
+    this.getTop500 = this.getTop500.bind(this);
+  }
+
+  getTop500(topWords) {
+    //Note: topWords is not guarenteed to hold 500 words, but it will hold at max 500 words.
+    //Each word contains the word string, its frequency, and its relative frequency as properties.
+    this.setState({top500Words: topWords});
   }
 
   //hypothetically, i could blend all three of these functions into one utility function BUT that would be messy so why would I?
@@ -186,8 +194,11 @@ class App extends Component {
               wordMap={this.state.wordMap}
               wordsAnalyzed={this.state.wordsAnalyzed}
               commentsAnalyzed={this.state.commentsAnalyzed}
+              getTop500={this.getTop500}
              />
-            <GraphData />
+            <GraphData
+              topWords={this.state.top500Words}
+            />
           </div>
         }
       </div>

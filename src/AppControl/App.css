@@ -1,3 +1,5 @@
+/* TODO: Organize this mess of a stylesheet */
+
 @import url('https://fonts.googleapis.com/css?family=PT+Sans:700|Lora:400i|Oswald:300,400|Ubuntu:400,700|Source+Sans+Pro:900|Waiting+for+the+Sunrise|Rock+Salt|Indie+Flower|Shadows+Into+Light|Montserrat:400,500');
 
 input {
@@ -45,13 +47,16 @@ input[type="text"]
   width: 25%;
   margin-top: 15px;
 
-  border: 2px outset white;
-  /*border: 1px solid black; */
+  border: 1.5px solid black;
   border-radius: 3px;
+  background: white;
 
   font-family: 'Ubuntu', sans-serif;
   font-weight: bold;
   font-size: 1.5em;
+
+  /* I love box-shadow, yes I do */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
 
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -66,6 +71,8 @@ input[type="text"]
   color: white;
   background: #303238;
   cursor: pointer;
+
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 
   -webkit-transform: translateX(8px);
   transform: translateX(8px);
@@ -359,18 +366,18 @@ input[type="text"]
 }
 .word {
   word-wrap: break-word;
-  width: 20vw;
-  max-width: 25vw;
+  width: 18vw;
+  max-width: 18vw;
 }
 .freq {
   word-wrap: break-word;
-  width: 15vw;
-  max-width: 15vw;
+  width: 14.5vw;
+  max-width: 14.5vw;
 }
 .relFreq {
   word-wrap: break-word;
-  width: 15vw;
-  max-width: 15vw;
+  width: 17.5vw;
+  max-width: 17.5vw;
 }
 td, th {
   text-align: left;

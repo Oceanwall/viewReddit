@@ -9,6 +9,7 @@ class TableData extends Component {
       wordMap: props.wordMap,
       wordsAnalyzed: props.wordsAnalyzed,
       commentsAnalyzed: props.commentsAnalyzed,
+      getTop500: props.getTop500,
       table: [],
     }
   }
@@ -30,17 +31,18 @@ class TableData extends Component {
     wordMapArray.sort((a, b) => {
       return b.frequency - a.frequency;
     });
-
     this.prepareTable(wordMapArray);
   }
 
   prepareTable(wordMapArray) {
     let tableElementArray = [];
+    let topWordArray = [];
 
     let tableLength = wordMapArray.length > 500 ? 500 : wordMapArray.length;
 
     for (let i = 0; i < tableLength; i++) {
       let element = wordMapArray[i];
+      topWordArray[i] = element;
       tableElementArray[i] = <TableElement
         word={element.word}
         frequency={element.frequency}
@@ -48,6 +50,7 @@ class TableData extends Component {
         key={i}/>;
     }
 
+    this.state.getTop500(topWordArray);
     this.setState({table: tableElementArray});
   }
 
