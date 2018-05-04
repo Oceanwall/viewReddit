@@ -12,8 +12,6 @@ class GraphData extends Component {
   }
 
   prepareData(topWords) {
-    //for now, let's only graph the first 5 words or so.
-    //this can probably be efficientized, but i'll figure that out later
     let targetWords = topWords.length > 15 ? 15 : topWords.length;
     let graphLabels = [];
     let graphData = [];

@@ -1,6 +1,7 @@
 //Necessary imports from node_modules
 import React, { Component } from 'react';
 import ReactFitText from 'react-fittext';
+import swal from 'sweetalert';
 
 import Selector from '../SelectorInterface/Selector.js'
 import WorkerButton from './WorkerButton.js';
@@ -48,6 +49,7 @@ class App extends Component {
 
     this.subredditHandle = this.handleSelectedSubreddit.bind(this);
     this.switchSubreddit = this.switchSubreddit.bind(this);
+    this.unconditionallySwitchSubreddit = this.unconditionallySwitchSubreddit.bind(this);
     this.resetSelector = this.resetSelector.bind(this);
     this.onFirstComment = this.handleFirstComment.bind(this);
     this.transferComment = this.transferComment.bind(this);
@@ -111,6 +113,26 @@ class App extends Component {
   //Called when either of the "Back" buttons are pressed
   //Ends the SnooStream and resets to Selector interface
   switchSubreddit() {
+    swal({
+      title: "Are you sure?",
+      text: "Your data will be reset when you switch subreddits.",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((switchDesire) => {
+      if (switchDesire) {
+        this.state.currentStream.emit("stop");
+
+        this.setState({
+          subredditSelected: false,
+          selectedSubreddit: "",
+          loading: false,
+        });
+      }
+    });
+  }
+
+  unconditionallySwitchSubreddit() {
     this.state.currentStream.emit("stop");
 
     this.setState({
@@ -147,7 +169,7 @@ class App extends Component {
           </ReactFitText>}
           {(this.state.loading) && <WorkerButton
               className="submit back"
-              click={this.switchSubreddit}
+              click={this.unconditionallySwitchSubreddit}
               text="GO BACK"
             />}
         </div>
@@ -172,6 +194,7 @@ class App extends Component {
             text="GO BACK"
           />}
           <CommentProcessor
+            subredditName={this.state.selectedSubreddit}
             transferViews={this.transferViews}
             resetData={this.resetData}
             currentComment={this.state.currentComment}

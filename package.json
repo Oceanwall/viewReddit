@@ -13,7 +13,9 @@
     "react-scripts": "1.1.1",
     "react-transition-group": "1.x",
     "snoostorm": "^0.0.5",
-    "snoowrap": "^1.15.2"
+    "snoowrap": "^1.15.2",
+    "sweetalert": "^2.1.0",
+    "xlsx": "^0.12.11"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -6,9 +6,11 @@
 //one ufnction here (switch views) and another function for the other component (reset?)
 //Do I hide this behind a button?
 import React, { Component } from 'react';
+import swal from 'sweetalert';
 import { processWord } from './WordProcessor.js';
 import WorkerButton from '../AppControl/WorkerButton.js';
 import { DO_NOT_PROCESS } from './WordAnalysisConstants.js';
+var XLSX = require('xlsx');
 
 var storageMap;
 var wordsAnalyzed;
@@ -18,15 +20,16 @@ class CommentProcessor extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      subredditName: props.subredditName,
       currentComment: props.currentComment,
       transferViews: props.transferViews,
       resetData: props.resetData,
       dataButtonClass: "submit back",
       resetDataClass: "submit back",
+      excelDataClass: "submit back disappear",
       showCommentData: props.showCommentData,
       hide: true,
     }
-    // console.log(this.state.transferViews);
 
     storageMap = new Map();
     wordsAnalyzed = 0;
@@ -34,21 +37,18 @@ class CommentProcessor extends Component {
 
     this.prepareData = this.prepareData.bind(this);
     this.resetData = this.resetData.bind(this);
+    this.downloadData = this.downloadData.bind(this);
   }
 
-//TODO: reset button should use pretty alert (sweet alert?)
-//TODO: replace with excel download button? (add to commentprocessor.js)
-//TODO: excel data
 
-//TODO: transitions between buttons; give it a more natural feel. Low priority
-//TODO:make table look nice(r?) low priority
+//TODO: hover on individual comments, clicking on one provides link to comment? or more details about comment?
 
   componentWillReceiveProps(nextProps) {
     //There is no need to save the current comment?
     this.processComment(nextProps.currentComment);
     this.setState({showCommentData: nextProps.showCommentData});
     if (nextProps.showCommentData === false && this.state.showCommentData === true) {
-      this.setState({dataButtonClass: "submit back", resetDataClass: "submit back"});
+      this.setState({dataButtonClass: "submit back", resetDataClass: "submit back", excelDataClass: "submit back disappear"});
     }
     if (wordsAnalyzed > 50) {
       this.setState({hide: false});
@@ -89,24 +89,60 @@ class CommentProcessor extends Component {
   prepareData() {
     this.state.transferViews(storageMap, wordsAnalyzed, commentsAnalyzed);
     //also, can this function be merged with onClick. test later...
-    this.setState({dataButtonClass: "submit back disappear", resetDataClass: "submit back disappear"});
+    this.setState({dataButtonClass: "submit back disappear", resetDataClass: "submit back disappear", excelDataClass: "submit back"});
+  }
+
+  downloadData() {
+    //format should be an array of arrays, where each array represents a row
+    let wordMapArray = [];
+    let excelDataArray = [];
+    let subredditNameOnly = this.state.subredditName.slice(3, -1);
+    let fileName = subredditNameOnly+ ".xlsx";
+    let workSheetName = subredditNameOnly + " Data";
+    let i = 0;
+
+    for (let [key, value] of storageMap) {
+      wordMapArray[i] = {word: key, frequency: value, relativeFrequency: (value / wordsAnalyzed).toFixed(5)};
+      i++;
+    }
+
+    wordMapArray.sort((a, b) => {
+      return b.frequency - a.frequency;
+    });
+
+    excelDataArray.push(["Word", "Frequency", "Relative Frequency"]);
+    for (let i = 0; i < wordMapArray.length; i++) {
+      let wordObject = wordMapArray[i];
+      excelDataArray.push([wordObject.word, wordObject.frequency, wordObject.relativeFrequency]);
+    }
+
+    let workBook = XLSX.utils.book_new();
+    let workSheet = XLSX.utils.aoa_to_sheet(excelDataArray);
+    XLSX.utils.book_append_sheet(workBook, workSheet, workSheetName);
+    XLSX.writeFile(workBook, fileName);
   }
 
   resetData() {
-    this.setState({resetDataClass: "submit back resetFeedback"});
-    storageMap = new Map();
-    wordsAnalyzed = 0;
-    commentsAnalyzed = 0;
-    this.state.resetData(storageMap, wordsAnalyzed, commentsAnalyzed);
-    this.badlySetCSS();
-  }
-
-
-  //TODO: fix this ugly css, replace with sweet alert
-  badlySetCSS() {
-    setTimeout(() => {
-      this.setState({resetDataClass: "submit back"});
-    }, 500);
+    swal({
+      title: "Are you sure?",
+      text: "Data cannot be recovered once the reset is complete.",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((wantDelete) => {
+      if (wantDelete) {
+        storageMap = new Map();
+        wordsAnalyzed = 0;
+        commentsAnalyzed = 0;
+        this.state.resetData(storageMap, wordsAnalyzed, commentsAnalyzed);
+        swal({
+          title: "Data Successfully Reset!",
+          text: "",
+          icon: "success",
+          button: "Awesome!"
+        });
+      }
+    });
   }
 
   render() {
@@ -124,6 +160,11 @@ class CommentProcessor extends Component {
           className={this.state.resetDataClass}
           click={this.resetData}
           text="RESET DATA"
+        />
+        <WorkerButton
+          className={this.state.excelDataClass}
+          click={this.downloadData}
+          text="DOWNLOAD DATA"
         />
       </span>
     );

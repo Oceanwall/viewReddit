@@ -1,6 +1,6 @@
 /* TODO: Organize this mess of a stylesheet */
 
-@import url('https://fonts.googleapis.com/css?family=PT+Sans:700|Lora:400i|Oswald:300,400|Ubuntu:400,700|Source+Sans+Pro:900|Waiting+for+the+Sunrise|Rock+Salt|Indie+Flower|Shadows+Into+Light|Montserrat:400,500');
+@import url('https://fonts.googleapis.com/css?family=PT+Sans:700|Lora:400i|Oswald:300,400|Ubuntu:400,700|Source+Sans+Pro:900|Waiting+for+the+Sunrise|Rock+Salt|Indie+Flower|Shadows+Into+Light|Montserrat:400,500|Alegreya+Sans');
 
 input {
   border: 1px dotted #999;
@@ -105,7 +105,18 @@ input[type="text"]
   text-align: center;
 
   border: 1px groove black;
+
+  /* -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  -webkit-transition-property: transform;
+  transition-property: transform;
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s; */
 }
+/* .classyAppearance:hover {
+  -webkit-transform: scale(1.1, 1.1);
+  transform: scale(1.1, 1.1);
+} */
 /* Color gradients obtained from uigradients.com */
 .color1 {
   background: #74ebd5;
@@ -405,4 +416,11 @@ td {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #081233;
+}
+.swal-title {
+  font-family: 'Alegreya Sans', sans-serif;
+  text-align: center;
+}
+.swal-text {
+  font-family: 'Montserrat', sans-serif;
 }
