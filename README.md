@@ -9,7 +9,7 @@
   <br>
 </h1>
 
-<h4 align="center">A web application built on <a href="https://reactjs.org" target="_blank">React</a> that provides real-time, dynamic visualization of comments from various subreddits.
+<h4 align="center">A web application built on <a href="https://reactjs.org" target="_blank">React</a> that analyzes comments from selected subreddits to provide both an attractive, real-time visual overlay and data-based tables and graphs.
 
 <br>
 <br>
@@ -17,7 +17,6 @@
 <p align="center">
   <a href="#key-features">Key Features</a> •
   <a href="#demos">Demos</a> •
-  <a href="#features-to-come">Features to Come</a> •
   <a href="#how-to-use">How To Use</a> •
   <a href="#credits">Credits</a> •
   <a href="#license">License</a>
@@ -25,8 +24,11 @@
 
 ## Key Features
 
-* Simple user interface
-* Supports all public subreddits
+* Simple and elegant user interface
+* Beautiful data-based visualizations
+  - Intuitive and attractive tables and graphs
+* Excel compatibility
+  - Offers the option to download all word data as an excel .xlsx file
 * Subreddit Error Handling
   - Prevents invalid subreddits from being entered, and will indicate to user if an entered subreddit is invalid.
 * Interactive loading screen
@@ -35,6 +37,8 @@
   - Comment retrieval and updating will only end when the user chooses to do so.
 * Comments are formatted randomly
   - Different comments get different backgrounds and fonts.
+* Interactive Comments
+  - Comments can be clicked on to provide a permalink linking to the comment on Reddit
 * Dynamic Resizing
   - Works for multiple screen sizes
 * Works across multiple browsers
@@ -44,13 +48,6 @@
 
 ![screenshot](https://raw.githubusercontent.com/Oceanwall/viewReddit/master/images/Loading.gif)
 ![screenshot](https://raw.githubusercontent.com/Oceanwall/viewReddit/master/images/ShowComments.gif)
-
-## Features to Come
-
-* Subreddit word analysis
-  - Filters out common words and spam comments.
-* Downloadable Excel spreadsheets detailing said word frequencies
-* Viewable and downloadable graph-based visualization of said data
 
 ## How To Use
 
@@ -92,10 +89,13 @@ This software has dependencies on / uses code from several open source packages 
 
 - [Node.js](https://nodejs.org/)
 - [Create React App](https://github.com/facebook/create-react-app)
-- [React FitText](http://softwarepsychonaut.com/react-fittext/)
+- [SheetJS](https://github.com/SheetJS/js-xlsx)
+- [SweetAlert](https://github.com/t4t5/sweetalert)
+- [react-chartjs-2](https://github.com/jerairrest/react-chartjs-2)
 - [Classnames](https://github.com/JedWatson/classnames)
 - [SnooWrap](https://github.com/not-an-aardvark/snoowrap)
 - [SnooStorm](https://github.com/MayorMonty/Snoostorm)
+- [React FitText](http://softwarepsychonaut.com/react-fittext/)
 - [Hover.css](http://ianlunn.github.io/Hover/)
 - [uiGradients](https://uigradients.com/)
 - [Animate.css](https://daneden.github.io/animate.css/)
@@ -107,9 +107,11 @@ MIT
 
 ---
 
-**Last updated: 3/25/2018**
+**Last updated: 5/04/2018**
 <br>
-A Work in Progress
 
 > [(Outdated) Personal Website](http://www.cs.utexas.edu/~mzhao/) &nbsp;&middot;&nbsp;
 > GitHub [@oceanwall](https://github.com/oceanwall) &nbsp;&middot;&nbsp;
+> LinkedIn [@atreides](https://www.linkedin.com/in/atreides/)
+<br>
+> Made with ❤ in Austin, Texas
