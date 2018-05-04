@@ -71,7 +71,8 @@ class CommentView extends Component {
         let newComment = <CommentWrapper
           location={divLocation}
           commentClass={commentClass}
-          body={comment.body}
+          comment={comment}
+          // body={comment.body}
           key={this.state.index}
         />
         newCommentArray[this.state.index] = newComment;

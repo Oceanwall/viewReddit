@@ -94,7 +94,7 @@ input[type="text"]
 }
 .classyAppearance {
   height: 95%;
-  width: 24.5vw;
+  width: 24vw;
 
   font-size:calc(14px + .3vw);
 
@@ -104,19 +104,20 @@ input[type="text"]
   vertical-align: center;
   text-align: center;
 
-  border: 1px groove black;
+  border: 1px solid black;
 
-  /* -webkit-transform: perspective(1px) translateZ(0);
+  -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
   -webkit-transition-property: transform;
   transition-property: transform;
   -webkit-transition-duration: 0.4s;
-  transition-duration: 0.4s; */
+  transition-duration: 0.4s;
 }
-/* .classyAppearance:hover {
-  -webkit-transform: scale(1.1, 1.1);
-  transform: scale(1.1, 1.1);
-} */
+.classyAppearance:hover {
+  cursor: pointer;
+  -webkit-transform: scale(1.05, 1.05);
+  transform: scale(1.05, 1.05);
+}
 /* Color gradients obtained from uigradients.com */
 .color1 {
   background: #74ebd5;
@@ -232,6 +233,8 @@ input[type="text"]
     "location14 location3 location15 location5"
     "location2 location12 location8 location11"
     "location7 location0 location9 location4";
+
+  margin-left: 0.8vw;
 }
 .leftSide {
   grid-area: 1 / 0 / 4 / 2;
@@ -423,4 +426,5 @@ td {
 }
 .swal-text {
   font-family: 'Montserrat', sans-serif;
+  text-align: center;
 }

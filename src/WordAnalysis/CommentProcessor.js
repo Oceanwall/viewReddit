@@ -1,10 +1,3 @@
-//words analyzed and storage map should be props passed down from app.js
-//this component handles tracking, etc; another component will handle display?
-//how do i shove live comments into this bad boy of a component?
-//ANSWER: to pass between siblings, must use parent as intermediary
-//maybe have prop comment; when that gets updated, call the processComment function on it? no need to actually update state?
-//one ufnction here (switch views) and another function for the other component (reset?)
-//Do I hide this behind a button?
 import React, { Component } from 'react';
 import swal from 'sweetalert';
 import { processWord } from './WordProcessor.js';
@@ -39,9 +32,6 @@ class CommentProcessor extends Component {
     this.resetData = this.resetData.bind(this);
     this.downloadData = this.downloadData.bind(this);
   }
-
-
-//TODO: hover on individual comments, clicking on one provides link to comment? or more details about comment?
 
   componentWillReceiveProps(nextProps) {
     //There is no need to save the current comment?
