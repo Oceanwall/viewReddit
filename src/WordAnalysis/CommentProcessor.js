@@ -36,11 +36,11 @@ class CommentProcessor extends Component {
     this.resetData = this.resetData.bind(this);
   }
 
-//TODO: reset data collection (give user feedback to indicate that data has been reset?) (maybe integrate jquery to avoid using setTimeout? idk this is an annoying problem but also really minor)
-//TODO: reset data: opaque rectangle saying (Reset success) and then auto renavigate to front page (with locked seemore button again? <- already taken care of)
-//addendum to above: change the css when clicked to make it look cooler. right now it looks really ugly
-//TODO: transitions between buttons; give it a more natural feel
-//TODO: prepare table and graph appearances
+//TODO: reset button should use pretty alert (sweet alert?)
+//TODO: replace with excel download button? (add to commentprocessor.js)
+//TODO: excel data
+
+//TODO: transitions between buttons; give it a more natural feel. Low priority
 //TODO:make table look nice(r?) low priority
 
   componentWillReceiveProps(nextProps) {
@@ -48,7 +48,7 @@ class CommentProcessor extends Component {
     this.processComment(nextProps.currentComment);
     this.setState({showCommentData: nextProps.showCommentData});
     if (nextProps.showCommentData === false && this.state.showCommentData === true) {
-      this.setState({dataButtonClass: "submit back"});
+      this.setState({dataButtonClass: "submit back", resetDataClass: "submit back"});
     }
     if (wordsAnalyzed > 50) {
       this.setState({hide: false});
@@ -89,7 +89,7 @@ class CommentProcessor extends Component {
   prepareData() {
     this.state.transferViews(storageMap, wordsAnalyzed, commentsAnalyzed);
     //also, can this function be merged with onClick. test later...
-    this.setState({dataButtonClass: "submit back disappear"});
+    this.setState({dataButtonClass: "submit back disappear", resetDataClass: "submit back disappear"});
   }
 
   resetData() {
@@ -101,6 +101,8 @@ class CommentProcessor extends Component {
     this.badlySetCSS();
   }
 
+
+  //TODO: fix this ugly css, replace with sweet alert
   badlySetCSS() {
     setTimeout(() => {
       this.setState({resetDataClass: "submit back"});

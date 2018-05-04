@@ -43,6 +43,7 @@ class App extends Component {
       currentComment: "",
       showCommentData: false,
       top500Words: [],
+      showGraphData: false
     };
 
     this.subredditHandle = this.handleSelectedSubreddit.bind(this);
@@ -59,7 +60,7 @@ class App extends Component {
   getTop500(topWords) {
     //Note: topWords is not guarenteed to hold 500 words, but it will hold at max 500 words.
     //Each word contains the word string, its frequency, and its relative frequency as properties.
-    this.setState({top500Words: topWords});
+    this.setState({top500Words: topWords, showGraphData: true});
   }
 
   //hypothetically, i could blend all three of these functions into one utility function BUT that would be messy so why would I?
@@ -68,7 +69,7 @@ class App extends Component {
   }
 
   switchViews() {
-    this.setState({showCommentData: false});
+    this.setState({showCommentData: false, showGraphData: false});
   }
 
   //commentview does not stop while this is happening, but css allows for easy "apparent" view changes
@@ -196,9 +197,13 @@ class App extends Component {
               commentsAnalyzed={this.state.commentsAnalyzed}
               getTop500={this.getTop500}
              />
-            <GraphData
-              topWords={this.state.top500Words}
-            />
+             <div className="dataBody">
+              {(this.state.showGraphData) &&
+                <GraphData
+                  topWords={this.state.top500Words}
+                />
+              }
+            </div>
           </div>
         }
       </div>
