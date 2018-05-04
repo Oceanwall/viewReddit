@@ -1,5 +1,6 @@
 import React from 'react';
 
+//General table element, representing one word (and its freq. and relative freq.)
 function TableElement(props) {
   return (
     <tr>

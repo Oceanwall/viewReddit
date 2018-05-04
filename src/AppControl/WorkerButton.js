@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+//General purpose button component
+//Allows for onclick functionality, class styling, held text, and option to disable
 class WorkerButton extends Component {
 
   constructor(props) {

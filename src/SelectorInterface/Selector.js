@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 
+//Allows user to select the subreddit of interest
 class Selector extends Component {
   constructor(props) {
     super(props);
     this.state = {
       value: '',
-      subredditCallback: props.onSubmit, //Store callback function in state
+      subredditCallback: props.onSubmit,
       acceptable: props.acceptable,
       reset: props.reset,
     };

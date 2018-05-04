@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TableElement from './TableElement.js';
 
+//Displays the frequencies of the top 500 words in tabular form
 class TableData extends Component {
   constructor(props) {
     super(props);
@@ -14,11 +15,12 @@ class TableData extends Component {
     }
   }
 
-  //i am a dumb dumb and forgot about this method :() AHHHHH
+  //Sorts table after component has been rendered (avoids pre-render state update error)
   componentDidMount() {
     this.sortTable();
   }
 
+  //Sorts the table to get the words in frequency order (from most frequent to least)
   sortTable() {
     let wordMapArray = [];
     let i = 0;
@@ -34,6 +36,7 @@ class TableData extends Component {
     this.prepareTable(wordMapArray);
   }
 
+  //Takes the top 500 most frequent words, and enters them into the table
   prepareTable(wordMapArray) {
     let tableElementArray = [];
     let topWordArray = [];

@@ -1,7 +1,10 @@
-/* TODO: Organize this mess of a stylesheet */
+/* General CSS for the entire web application.
+ * In the future, I will try to make one general stylesheet and specific
+ * stylesheets for individual components, but for now, this mess of a stylesheet
+ * is not something that I particularly want to resolve.
+ */
 
 @import url('https://fonts.googleapis.com/css?family=PT+Sans:700|Lora:400i|Oswald:300,400|Ubuntu:400,700|Source+Sans+Pro:900|Waiting+for+the+Sunrise|Rock+Salt|Indie+Flower|Shadows+Into+Light|Montserrat:400,500|Alegreya+Sans');
-
 input {
   border: 1px dotted #999;
   border-radius: 5px;
@@ -41,7 +44,6 @@ input[type="text"]
 
   font-family: 'PT Sans', sans-serif;
 }
-/* Forward movement is thanks to https://github.com/IanLunn/Hover/blob/master/css/hover.css */
 .submit {
   height: 40px;
   width: 25%;
@@ -373,7 +375,7 @@ input[type="text"]
   overflow-y: scroll;
   overflow-x: hidden;
   height: 60vh;
-  width: 50vw;
+  width: 48vw;
 }
 .leftSide {
   grid-area: 1 / 0 / 4 / 2;
@@ -398,13 +400,12 @@ td, th {
 }
 th {
   font-family: 'PT Sans', sans-serif;
-  font-size: 3vh; /* NOTE: Maybe make this dynamic? hmmmmm */
+  font-size: 3vh;
 }
 td {
   font-family: 'Montserrat', sans-serif;
   font-size: 2.5vh;
 }
-/* HOLY MOLY you can CSS scrollbars :) */
 ::-webkit-scrollbar {
   width: 10px;
 }

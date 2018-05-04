@@ -20,6 +20,7 @@ class CommentView extends Component {
     this.showComments(); //kicks off comment collection
   }
 
+  //Hides and reveals buttons as necessary
   componentWillReceiveProps(nextProps) {
     this.setState({showCommentData: nextProps.showCommentData});
     if (nextProps.showCommentData === true && this.state.showCommentData === false) {
@@ -54,6 +55,7 @@ class CommentView extends Component {
         let randomFormatNumber1 = Math.floor((Math.random() * 4) + 1);
         let randomFormatNumber2 = Math.floor((Math.random() * 4) + 1);
 
+        //Assign relevant classes to the comment
         let commentClass = classNames({
           "classyAppearance": true,
           [`color${randomFormatNumber1}`]: true,
@@ -77,6 +79,7 @@ class CommentView extends Component {
         />
         newCommentArray[this.state.index] = newComment;
 
+        //Add to relevant spot on the Commentview
         let newIndex = (this.state.index + 1) % 16;
         if (newIndex === 0 && this.state.filledOnce === false) {
           this.setState({filledOnce: true});

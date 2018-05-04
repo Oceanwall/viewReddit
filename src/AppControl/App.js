@@ -20,7 +20,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     //creates snoowrap instance
-    //DONT do this with webapp; different authentication process for that
     const snoowrap = new Snoowrap({
       userAgent: "viewForReddit737362",
       clientId: process.env.REACT_APP_CLIENT_ID,
@@ -31,6 +30,7 @@ class App extends Component {
     //uses snoowrap instance for snoostorm instance
     let client = new Snoostorm(snoowrap);
 
+    //main application state variables, used to control and send information to children
     this.state = {
       snoo : snoowrap,
       client: client,
@@ -47,6 +47,7 @@ class App extends Component {
       showGraphData: false
     };
 
+    //binding this to variables so that they can be disseminated to child components
     this.subredditHandle = this.handleSelectedSubreddit.bind(this);
     this.switchSubreddit = this.switchSubreddit.bind(this);
     this.unconditionallySwitchSubreddit = this.unconditionallySwitchSubreddit.bind(this);
@@ -59,27 +60,30 @@ class App extends Component {
     this.getTop500 = this.getTop500.bind(this);
   }
 
+  //Gets the 500 most frequently used words.
   getTop500(topWords) {
     //Note: topWords is not guarenteed to hold 500 words, but it will hold at max 500 words.
     //Each word contains the word string, its frequency, and its relative frequency as properties.
     this.setState({top500Words: topWords, showGraphData: true});
   }
 
-  //hypothetically, i could blend all three of these functions into one utility function BUT that would be messy so why would I?
+  //Resets the state of data held by the main app
   resetData(newMap, newWordsAnalyzed, commentsAnalyzed) {
     this.setState({wordMap: newMap, wordsAnalyzed: newWordsAnalyzed, commentsAnalyzed: commentsAnalyzed});
   }
 
+  //Hides table and graph data
   switchViews() {
     this.setState({showCommentData: false, showGraphData: false});
   }
 
-  //commentview does not stop while this is happening, but css allows for easy "apparent" view changes
+  //Commentview does not stop while this is happening, but css allows for easy "apparent" view changes
   transferViews(newMap, newWordsAnalyzed, commentsAnalyzed) {
     //this should NOT cause the commmentstream to stop
     this.setState({wordMap: newMap, wordsAnalyzed: newWordsAnalyzed, commentsAnalyzed: commentsAnalyzed, showCommentData: true});
   }
 
+  //Set the currentComment state so that a new comment can be sent to comment view.
   transferComment(comment) {
     this.setState({currentComment: comment});
   }
@@ -89,6 +93,7 @@ class App extends Component {
     this.setState({loading: false});
   }
 
+  //Fires when the user inputs a subreddit that they'd like to view.
   handleSelectedSubreddit(subreddit, event) {
     //Subreddit validation
     this.setState({loading: true});
@@ -110,8 +115,8 @@ class App extends Component {
     });
   }
 
-  //Called when either of the "Back" buttons are pressed
-  //Ends the SnooStream and resets to Selector interface
+  //Called when the "Back" button on the comment view page is pressed
+  //Provides a warning before ending the SnooStream and resetting to Selector interface
   switchSubreddit() {
     swal({
       title: "Are you sure?",
@@ -132,6 +137,8 @@ class App extends Component {
     });
   }
 
+  //Called when the "back" button is pressed on the loading screen
+  //ends Snoostream and resets Selector interface without providing warning
   unconditionallySwitchSubreddit() {
     this.state.currentStream.emit("stop");
 
@@ -211,6 +218,7 @@ class App extends Component {
             showCommentData={this.state.showCommentData}
           />
         }
+        {/* Table and Graph data interface */}
         {(this.state.showCommentData) &&
           <div className="fill">
             <TableData

@@ -17,6 +17,8 @@ class CommentWrapper extends Component {
     this.showCommentData = this.showCommentData.bind(this);
   }
 
+  //Allows for onclick functionality
+  //Displays details of the comment, and gives link to comment for user to follow
   showCommentData() {
     let author = this.state.comment.author.name;
     let permalink = "https://www.reddit.com" + this.state.comment.permalink;

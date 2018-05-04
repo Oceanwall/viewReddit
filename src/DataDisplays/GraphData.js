@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Bar} from 'react-chartjs-2';
 
+//Displays word frequency data in graph form
 class GraphData extends Component {
   constructor(props) {
     super(props);
@@ -11,6 +12,7 @@ class GraphData extends Component {
     console.log(this.state.dataForGraph);
   }
 
+  //Takes the top 15 words, and graphs their frequency
   prepareData(topWords) {
     let targetWords = topWords.length > 15 ? 15 : topWords.length;
     let graphLabels = [];

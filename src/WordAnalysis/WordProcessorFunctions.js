@@ -15,7 +15,6 @@ function isContraction(word) {
 }
 
 //Returns true if a word is extraneous, false if it's not
-//NOTE: Fix use of Numbers? or add to main array? hmm
 function checkChar(char) {
   return EXTRANEOUS.indexOf(char) !== -1 || NUMBERS.indexOf(char) !== -1;
 }
