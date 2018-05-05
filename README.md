@@ -46,9 +46,6 @@
 
 ## Demos
 
-![screenshot](https://raw.githubusercontent.com/Oceanwall/viewReddit/master/images/Loading.gif)
-![screenshot](https://raw.githubusercontent.com/Oceanwall/viewReddit/master/images/ShowComments.gif)
-
 ## How To Use
 
 To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. I personally recommend using [Yarn](https://yarnpkg.com/en/) as a faster alternative to npm. From your command line:
@@ -114,4 +111,4 @@ MIT
 > GitHub [@oceanwall](https://github.com/oceanwall) &nbsp;&middot;&nbsp;
 > LinkedIn [@atreides](https://www.linkedin.com/in/atreides/)
 <br>
-> Made with ❤ in Austin, Texas
+Made with ❤ in Austin, Texas
