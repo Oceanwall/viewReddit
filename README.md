@@ -39,12 +39,16 @@
   - Different comments get different backgrounds and fonts.
 * Interactive Comments
   - Comments can be clicked on to provide a permalink linking to the comment on Reddit
-* Dynamic Resizing
-  - Works for multiple screen sizes
-* Works across multiple browsers
-  - Google Chrome, Internet Explorer, and Firefox, among many others.
 
 ## Demos
+
+![Subreddit Selector](https://raw.githubusercontent.com/Oceanwall/viewReddit/master/images/selector.png) <br>
+![Comment Details](https://raw.githubusercontent.com/Oceanwall/viewReddit/master/images/detailsPage.png) <br>
+![Main Comment View Page](https://raw.githubusercontent.com/Oceanwall/viewReddit/master/images/mainPage.png) <br> <br>
+**Click the image below to access a YouTube clip demoing the features of viewReddit.** <br> <br>
+[![viewReddit Video Demo](https://raw.githubusercontent.com/Oceanwall/viewReddit/master/images/videoDemo.png)](https://www.youtube.com/watch?v=YEYDvOTiTXo) <br> <br>
+
+**More images of viewReddit can be found <a href="https://imgur.com/a/NBf6C2C" target="_blank">here</a>**
 
 ## How To Use
 
