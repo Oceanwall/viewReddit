@@ -11,6 +11,3 @@
 #Build generated
 dist/
 build/
-
-# Yarn Lock file
-yarn.lock
